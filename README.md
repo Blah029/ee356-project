@@ -1,4 +1,5 @@
 # ee356-project
+
 3rd year EE356: Electronic Product Design project
 
 - Group 10
@@ -14,3 +15,8 @@
   - Implementation: 21st Oct 2022 - 8th Jan 2022
   - Completion: 26th Dec 2022 - 15th Jan 2023
   - Product deployment: 16th-22nd Jan 2023
+</br></br>
+- arduino_main
+  - Arduino code for the project
+- proteus_simulation
+  - Simulation of the project done in Proteus
