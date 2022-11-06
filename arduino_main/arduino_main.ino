@@ -13,11 +13,8 @@
 // GLOBAL VARIABLE DECLARATIONS
 // Pin designations
 #define SERIAL_DISP_1_EN   2
-#define SERIAL_DISP_2_EN   5
 #define SERIAL_DISP_1_CLK  3
 #define SERIAL_DISP_1_DATA 4
-#define SERIAL_DISP_2_CLK  6
-#define SERIAL_DISP_2_DATA 7
 
 /*
 int num1_enable = 12;
@@ -43,9 +40,8 @@ void setup() {
     pinMode(SERIAL_DISP_1_EN, OUTPUT);   // num1_enable - latch
     pinMode(SERIAL_DISP_1_CLK, OUTPUT);  // clk1
     pinMode(SERIAL_DISP_1_DATA, OUTPUT); // num1_in - data
-    pinMode(SERIAL_DISP_2_EN, OUTPUT);   // num2_enable - latch
-    pinMode(SERIAL_DISP_2_CLK, OUTPUT);  // clk2
-    pinMode(SERIAL_DISP_2_DATA, OUTPUT); // num2_in - data
+
+    pinMode(A0, INPUT); // for battery level
 
     /*
     pinMode(num1_enable, OUTPUT);   // Operand 1 enable
@@ -63,23 +59,28 @@ void setup() {
 
 // Main loop
 void loop() {
+    while (0) {
+    int k = 0;
+    k = (int) (analogRead(A0)/1024)*9;
+    digitalWrite(SERIAL_DISP_1_EN, HIGH);
+    delay(1000);
+    shiftOut(SERIAL_DISP_1_DATA, SERIAL_DISP_1_CLK, MSBFIRST, k);
+    digitalWrite(SERIAL_DISP_1_EN, LOW);
+    delay(1000);
+    }
+    
     // Example code for serial communication for the 7SSDs. -------------------
     digitalWrite(SERIAL_DISP_1_EN, HIGH);
     delay(1000);
     for (int i = 0; i <= 9; i++) {
-        shiftOut(SERIAL_DISP_1_DATA, SERIAL_DISP_1_CLK, MSBFIRST, i);
-        delay(250);
+        for (int j = 0; j <= 9; j++) {
+		    shiftOut(SERIAL_DISP_1_DATA, SERIAL_DISP_1_CLK, MSBFIRST, (i << 4) + j);
+            delay(250);
+        }
     }
     digitalWrite(SERIAL_DISP_1_EN, LOW);
     delay(1000);
 
-    digitalWrite(SERIAL_DISP_2_EN, HIGH);
-    delay(1000);
-    for (int i = 0; i <= 9; i++) {
-        shiftOut(SERIAL_DISP_2_DATA, SERIAL_DISP_2_CLK, MSBFIRST, i);
-        delay(250);
-    }
-    digitalWrite(SERIAL_DISP_2_EN, LOW);
-    delay(1000);
     // ------------------------------------------------------------------------
+    
 }
