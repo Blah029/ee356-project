@@ -60,7 +60,7 @@ void setup() {
 // Main loop
 void loop() {
     while (0) {
-    int k = 0;
+    int k = 0; // battery level
     k = (int) (analogRead(A0)/1024)*9;
     digitalWrite(SERIAL_DISP_1_EN, HIGH);
     delay(1000);
@@ -70,7 +70,7 @@ void loop() {
     }
     
     // Example code for serial communication for the 7SSDs. -------------------
-    digitalWrite(SERIAL_DISP_1_EN, HIGH);
+    digitalWrite(SERIAL_DISP_1_EN, LOW);
     delay(1000);
     for (int i = 0; i <= 9; i++) {
         for (int j = 0; j <= 9; j++) {
@@ -78,7 +78,7 @@ void loop() {
             delay(250);
         }
     }
-    digitalWrite(SERIAL_DISP_1_EN, LOW);
+    digitalWrite(SERIAL_DISP_1_EN, HIGH);
     delay(1000);
 
     // ------------------------------------------------------------------------
