@@ -62,7 +62,7 @@ void loop() {
 // Convert 8-bit parallel to serial and read a two digit number
 int get_data(int pin) {
     int data = shiftIn(pin, clk, MSBFIRST);
-    return data and 0b00001111 + (data >> 4)*10;
+    return ((data >> 4) and 0b00001111)*10 + (data and 0b00001111);
 }
 
 
