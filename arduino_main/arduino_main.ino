@@ -10,77 +10,89 @@
  * E/17/371 Warnakulasuriya R.
  */
 
-// GLOBAL VARIABLE DECLARATIONS
 // Pin designations
-#define SERIAL_DISP_1_EN   2
-#define SERIAL_DISP_1_CLK  3
-#define SERIAL_DISP_1_DATA 4
-
-/*
-int num1_enable = 12;
-int num1_in = 11;
-int num2_enable = 10;
-int num2_in = 9;
-
-int op_enable = 8;
-int op_in = 7;
-int disp_enable = 6;
-int disp_out = 5;
-
-int clk = 4;
-*/
+// Digital pins
+const int num1_en = 12;
+const int num1_data = 11;
+const int num2_en = 10;
+const int num2_data = 9;
+const int op_en = 8;
+const int op_data = 7;
+const int disp_en = 6;          // change hardware pin from 2
+const int disp_data = 5;        // change hardware pin from 4
+const int clk = 4;              // change hardware pin from 3
+// Analog pins
+const int battery_level = 14;
 
 // Possible number combinations
 int prompts[40] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 
                    15, 16, 17, 18, 20, 21, 24, 25, 27, 28, 30, 32, 35, 36, 40, 
                    42, 45, 48, 49, 54, 56, 63, 64, 72, 81};
 
-// Set up I/O pins
+// Function prototyping
+int get_data(int pin);
+void send_data(int pin, int digit_10, int digit_1);
+void test();
+
+
+// I/O pin setup
 void setup() {
-    pinMode(SERIAL_DISP_1_EN, OUTPUT);   // num1_enable - latch
-    pinMode(SERIAL_DISP_1_CLK, OUTPUT);  // clk1
-    pinMode(SERIAL_DISP_1_DATA, OUTPUT); // num1_in - data
-
-    pinMode(A0, INPUT); // for battery level
-
-    /*
-    pinMode(num1_enable, OUTPUT);   // Operand 1 enable
-    pinMode(num2_enable, OUTPUT);   // Operand 2 enable
-    pinMode(op_enable, OUTPUT);     // Operator enable
-    pinMode(disp_enable, OUTPUT);   // Display enable
-    pinMode(disp_out, OUTPUT);      // Display serial out
+    // Digital output
+    pinMode(num1_en, OUTPUT);       // Operand 1 enable
+    pinMode(num2_en, OUTPUT);       // Operand 2 enable
+    pinMode(op_en, OUTPUT);         // Operator enable
+    pinMode(disp_en, OUTPUT);       // Display enable
+    pinMode(disp_data, OUTPUT);     // Display serial out
     pinMode(clk, OUTPUT);           // Common clock
-    pinMode(num1_in, INPUT);        // Operand 1 serial in
-    pinMode(num2_in, INPUT);        // Operand 2 serial in
-    pinMode(op_in, INPUT);          // Operator serial in
-    */
+    // Digital input
+    pinMode(num1_data, INPUT);      // Operand 1 serial in
+    pinMode(num2_data, INPUT);      // Operand 2 serial in
+    pinMode(op_data, INPUT);        // Operator serial in
+    // Analog input
+    pinMode(battery_level, INPUT);  // Battery voltage
 }
 
 
 // Main loop
 void loop() {
+
+}
+
+
+// Convert 8-bit parallel to serial and read a two digit number
+int get_data(int pin) {
+    int data = shiftIn(pin, clk, MSBFIRST);
+    return data and 0b00001111 + (data >> 4)*10;
+}
+
+
+// Output a two digit number and convert 8-bit serial to parallel
+void send_data(int pin, int digit_10, int digit_1) {
+    shiftOut(pin, clk, MSBFIRST, (digit_10 << 4) + digit_1);
+}
+
+
+// Test shift registers and seven segment display
+void test() {
     while (0) {
     int k = 0; // battery level
-    k = (int) (analogRead(A0)/1024)*9;
-    digitalWrite(SERIAL_DISP_1_EN, HIGH);
+    k = (int) (analogRead(battery_level)/1024)*9;
+    digitalWrite(disp_en, HIGH);
     delay(1000);
-    shiftOut(SERIAL_DISP_1_DATA, SERIAL_DISP_1_CLK, MSBFIRST, k);
-    digitalWrite(SERIAL_DISP_1_EN, LOW);
+    shiftOut(disp_data, clk, MSBFIRST, k);
+    digitalWrite(disp_en, LOW);
     delay(1000);
     }
     
     // Example code for serial communication for the 7SSDs. -------------------
-    digitalWrite(SERIAL_DISP_1_EN, LOW);
+    digitalWrite(disp_en, LOW);
     delay(1000);
     for (int i = 0; i <= 9; i++) {
         for (int j = 0; j <= 9; j++) {
-		    shiftOut(SERIAL_DISP_1_DATA, SERIAL_DISP_1_CLK, MSBFIRST, (i << 4) + j);
+		    shiftOut(disp_data, clk, MSBFIRST, (i << 4) + j);
             delay(250);
         }
     }
-    digitalWrite(SERIAL_DISP_1_EN, HIGH);
+    digitalWrite(disp_en, HIGH);
     delay(1000);
-
-    // ------------------------------------------------------------------------
-    
 }
