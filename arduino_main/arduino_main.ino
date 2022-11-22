@@ -68,7 +68,9 @@ int get_data(int pin) {
 
 // Output a two digit number and convert 8-bit serial to parallel
 void send_data(int pin, int digit_10, int digit_1) {
+    digitalWrite(disp_en, HIGH); // Negative logic - disable ouptut
     shiftOut(pin, clk, MSBFIRST, (digit_10 << 4) + digit_1);
+    digitalWrite(disp_en, LOW);
 }
 
 
