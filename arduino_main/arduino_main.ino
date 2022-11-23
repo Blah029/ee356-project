@@ -14,24 +14,25 @@
 
 // ------------------------------------------------------------------------------------------------
 // Pin designations
+// Synchronous clock
+const int Pin_CLK               =  4;  // Synchronous clock signal
+
 // Pins for the block inputs
 // TODO: Check whether we can use a common enable line for the three blocks (that would be easier)
-const int Pin_Num1_Enable    = 12;  // Block 1 Enable
-const int Pin_Num1_Data      = 11;  // Block 1 Data
-const int Pin_Op_Enable      =  8;  // Operator block Enable
-const int Pin_Op_Data        =  7;  // Operator block Data
-const int Pin_Num2_Enable    = 10;  // Block 2 Enable
-const int Pin_Num2_Data      =  9;  // Block 2 Data
+const int Pin_Block_Shift_Load  = 12;  // Shift/Load pins of PISO registers
+const int Pin_Block_CLK_Inhibit = 10;  // Clock inhibit pin of PISO registers
+
+const int Pin_Num1_Data         = 11;  // Block 1 Data pin
+const int Pin_Op_Data           =  7;  // Operator block Data pin
+const int Pin_Num2_Data         =  9;  // Block 2 Data pin
+int Pin_Block_Array[3]          = {Pin_Num1_Data, Pin_Op_Data, Pin_Num2_Data};
 
 // Pins for the display unit
-const int Pin_Display_Enable =  6;  // Display Unit Enable TODO: change hardware pin from 2
-const int Pin_Display_Data   =  5;  // Display Unit Data   TODO: change hardware pin from 4
-
-// Common clock
-const int Pin_CLK            =  4;  // Synchronous clock signal TODO: change hardware pin from 3
+const int Pin_Display_Enable    =  6;  // BCD-7S Decoder Enable pin
+const int Pin_Display_Data      =  5;  // BCD-7S Decoder Data pin
 
 // Analog pins
-const int Pin_Battery_Level  = 14;  // Analog input pin for battery level
+const int Pin_Battery_Level     = 14;  // Analog input pin for battery level
 // ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
@@ -43,15 +44,50 @@ int ValidNumberList[40] = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 
 // ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
+<<<<<<< Updated upstream
+=======
+// Global Variables
+int ByteField[3] = {0, 0, 0}; // Bit field to store block data
+                              // i = 0: Num1 block
+                              // i = 1: Operator block
+                              // i = 2: Num2 block
+// ------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------------------
+// Function prototyping (declarations)
+void ReadFromBlocks();
+void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1);
+int  ReadBatteryLevel();
+
+void DisplayTest00To99();
+// ------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------------------
+>>>>>>> Stashed changes
 // Function definitions
-// Convert 8-bit parallel to serial and read a two digit number
-int ReadData(int data_pin) {
-    int data = shiftIn(data_pin, Pin_CLK, MSBFIRST);
-    return data; // returns the raw 8 bits
-    return ((data >> 4) and 0b00001111)*10 + (data and 0b00001111);
+
+// Reads the parallel-in serial out registers (blocks)
+// into bit fields BlockNum1, BlockOp, BlockNum2.
+void ReadFromBlocks() {
+    for (int i = 0; i < 3; i++) {
+        // Write a pulse to (SH/LD) pin (load the data to register)
+        digitalWrite(Pin_Block_Shift_Load, LOW);  delayMicroseconds(5);
+        digitalWrite(Pin_Block_Shift_Load, HIGH); delayMicroseconds(5);
+
+        digitalWrite(Pin_CLK, HIGH);
+        digitalWrite(Pin_Block_CLK_Inhibit, LOW);
+
+        // Read raw data of byte i
+        ByteField[i] = ~shiftIn(Pin_Block_Array[i], Pin_CLK, MSBFIRST);
+
+        digitalWrite(Pin_Block_CLK_Inhibit, HIGH);
+
+        digitalWrite(Pin_CLK, LOW);
+    }
 }
 
 // Output a two digit number and convert 8-bit serial to parallel
+// Send two digits to the display
 void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1) {
     shiftOut(data_pin, Pin_CLK, MSBFIRST, (digit_10 << 4) + digit_1);
 }
@@ -66,8 +102,8 @@ int ReadBatteryLevel() {
 
 // ------------------------------------------------------------------------------------------------
 // Test shift registers and seven segment display
-void test() {
-    // Example code for serial communication for the 7SSDs. -------------------
+// Example code for serial communication for the 7SSDs
+void DisplayTest00To99() {
     digitalWrite(Pin_Display_Enable, HIGH); // Negative logic
     delay(1000);
     for (int i = 0; i <= 9; i++) {
@@ -86,24 +122,54 @@ void test() {
 void setup() {
     // I/O pin setup
     // Digital outputs
-    pinMode(Pin_Num1_Enable,    OUTPUT);     // Operand 1 enable
-    pinMode(Pin_Op_Enable,      OUTPUT);     // Operator enable
-    pinMode(Pin_Num2_Enable,    OUTPUT);     // Operand 2 enable
-    pinMode(Pin_Display_Enable, OUTPUT);     // Display enable
-    pinMode(Pin_Display_Data,   OUTPUT);     // Display serial out
-    pinMode(Pin_CLK,            OUTPUT);     // Synchronous clock
+    pinMode(Pin_Block_Shift_Load,  OUTPUT); // 
+    pinMode(Pin_Block_CLK_Inhibit, OUTPUT); // 
+
+    //pinMode(Pin_Op_Enable,         OUTPUT); // Operator  enable
+    pinMode(Pin_Display_Data,      OUTPUT); // Display serial out
+    pinMode(Pin_CLK,               OUTPUT); // Synchronous clock
 
     // Digital inputs
-    pinMode(Pin_Num1_Data,      INPUT);      // Operand 1 serial in
-    pinMode(Pin_Num2_Data,      INPUT);      // Operand 2 serial in
-    pinMode(Pin_Op_Data,        INPUT);      // Operator  serial in
+    pinMode(Pin_Num1_Data,         INPUT);  // Operand 1 serial in
+    pinMode(Pin_Num2_Data,         INPUT);  // Operand 2 serial in
+    pinMode(Pin_Op_Data,           INPUT);  // Operator  serial in
 
     // Analog inputs
     pinMode(Pin_Battery_Level,  INPUT);  // Battery voltage
+
+    // Pre-loop commands
+    digitalWrite(Pin_Display_Enable, HIGH); // Switch off the display (negative logic)
+
+    // Initialize variables
+    BlockNum1 = 0; BlockOp = 0; BlockNum2 = 0;
 }
 
 // Main loop
 void loop() {
-    test();
+    // TODO: do this reading part when an interrupt occurs
+    ReadFromBlocks();
+
+    // Process raw data
+    int b1d1 = (ByteField[0] >> 4) & 0b00001111;
+    int b1d0 =  ByteField[0]       & 0b00001111;
+    int opd1 = (ByteField[1] >> 4) & 0b00001111;
+    int opd0 =  ByteField[1]       & 0b00001111;
+    int b2d1 = (ByteField[2] >> 4) & 0b00001111;
+    int b2d0 =  ByteField[3]       & 0b00001111;
+
+    digitalWrite(Pin_Display_Enable, LOW); // Negative logic
+    delay(1000);
+
+    SendDigitsToDisplay(Pin_Display_Data, b1d1, b1d0);
+    delay(1000);
+    SendDigitsToDisplay(Pin_Display_Data, opd1, opd0);
+    delay(1000);
+    SendDigitsToDisplay(Pin_Display_Data, b2d1, b2d0);
+    delay(1000);
+
+    digitalWrite(Pin_Display_Enable, HIGH); // Negative logic
+    delay(1000);
+
+    //test();
 }
 // ------------------------------------------------------------------------------------------------
