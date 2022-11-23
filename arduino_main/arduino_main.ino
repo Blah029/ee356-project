@@ -43,14 +43,6 @@ int ValidNumberList[40] = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 
 // ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
-// Function prototyping (declarations)
-int  ReadData(int data_pin);
-void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1);
-int  ReadBatteryLevel();
-void test();
-// ------------------------------------------------------------------------------------------------
-
-// ------------------------------------------------------------------------------------------------
 // Function definitions
 // Convert 8-bit parallel to serial and read a two digit number
 int ReadData(int data_pin) {
