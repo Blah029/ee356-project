@@ -135,10 +135,9 @@ void setup() {
     pinMode(Pin_Battery_Level,  INPUT);  // Battery voltage
 
     // Pre-loop commands
-    digitalWrite(Pin_Display_Enable, HIGH); // Switch off the display (negative logic)
-
-    // Initialize variables
-    BlockNum1 = 0; BlockOp = 0; BlockNum2 = 0;
+    digitalWrite(Pin_Display_Enable, LOW); // Switch off the display (negative logic)
+    SendDigitsToDisplay(Pin_Display_Data, 0, 0);
+    digitalWrite(Pin_Display_Enable, HIGH); // Negative logic
 }
 
 // Main loop
@@ -152,7 +151,7 @@ void loop() {
     int opd1 = (ByteField[1] >> 4) & 0b00001111;
     int opd0 =  ByteField[1]       & 0b00001111;
     int b2d1 = (ByteField[2] >> 4) & 0b00001111;
-    int b2d0 =  ByteField[3]       & 0b00001111;
+    int b2d0 =  ByteField[2]       & 0b00001111;
 
     digitalWrite(Pin_Display_Enable, LOW); // Negative logic
     delay(1000);
