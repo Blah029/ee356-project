@@ -30,6 +30,7 @@ int Pin_Block_Array[3]          = {Pin_Num1_Data, Pin_Op_Data, Pin_Num2_Data};
 // Pins for the display unit
 const int Pin_Display_Enable    =  6;  // BCD-7S Decoder Enable pin
 const int Pin_Display_Data      =  5;  // BCD-7S Decoder Data pin
+const int Pin_Display_Reg_Enable=  8;  // BCD-7S Register Enable pin (595)
 
 // Analog pins
 const int Pin_Battery_Level     = 14;  // Analog input pin for battery level
@@ -86,7 +87,10 @@ void ReadFromBlocks() {
 // Output a two digit number and convert 8-bit serial to parallel
 // Send two digits to the display
 void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1) {
+    digitalWrite(Pin_Display_Reg_Enable, LOW);
     shiftOut(data_pin, Pin_CLK, MSBFIRST, (digit_10 << 4) + digit_1);
+    digitalWrite(Pin_Display_Reg_Enable, HIGH);
+
 }
 
 // Read the battery level from analog pin "Pin_Battery_Level"
@@ -101,15 +105,16 @@ int ReadBatteryLevel() {
 // Test shift registers and seven segment display
 // Example code for serial communication for the 7SSDs
 void DisplayTest00To99() {
-    digitalWrite(Pin_Display_Enable, HIGH); // Negative logic
+    SendDigitsToDisplay(Pin_Display_Data, 0, 0);
+    digitalWrite(Pin_Display_Enable, HIGH);
     delay(1000);
     for (int i = 0; i <= 9; i++) {
         for (int j = 0; j <= 9; j++) {
             SendDigitsToDisplay(Pin_Display_Data, i, j);
-            delay(250);
+            delay(50);
         }
     }
-    digitalWrite(Pin_Display_Enable, LOW); // Negative logic
+    digitalWrite(Pin_Display_Enable, LOW);
     delay(1000);
 }
 // ------------------------------------------------------------------------------------------------
@@ -122,7 +127,8 @@ void setup() {
     pinMode(Pin_Block_Shift_Load,  OUTPUT); // 
     pinMode(Pin_Block_CLK_Inhibit, OUTPUT); // 
 
-    //pinMode(Pin_Op_Enable,         OUTPUT); // Operator  enable
+    pinMode(Pin_Display_Enable,     OUTPUT); // Display  enable
+    pinMode(Pin_Display_Reg_Enable, OUTPUT); // Display reg enable
     pinMode(Pin_Display_Data,      OUTPUT); // Display serial out
     pinMode(Pin_CLK,               OUTPUT); // Synchronous clock
 
@@ -153,19 +159,19 @@ void loop() {
     int b2d1 = (ByteField[2] >> 4) & 0b00001111;
     int b2d0 =  ByteField[2]       & 0b00001111;
 
-    digitalWrite(Pin_Display_Enable, LOW); // Negative logic
-    delay(1000);
-
     SendDigitsToDisplay(Pin_Display_Data, b1d1, b1d0);
+    digitalWrite(Pin_Display_Enable, HIGH);
     delay(1000);
     SendDigitsToDisplay(Pin_Display_Data, opd1, opd0);
+    digitalWrite(Pin_Display_Enable, HIGH);
     delay(1000);
     SendDigitsToDisplay(Pin_Display_Data, b2d1, b2d0);
+    digitalWrite(Pin_Display_Enable, HIGH);
     delay(1000);
 
-    digitalWrite(Pin_Display_Enable, HIGH); // Negative logic
+    digitalWrite(Pin_Display_Enable, LOW);
     delay(1000);
 
-    //test();
+    //DisplayTest00To99();
 }
 // ------------------------------------------------------------------------------------------------
