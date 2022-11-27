@@ -10,7 +10,6 @@
  * E/17/234 Pandukabhaya V. K. M.
  * E/17/371 Warnakulasuriya R.
  */
-
 // ------------------------------------------------------------------------------------------------
 
 // Pin designations
@@ -96,7 +95,6 @@ void NextButtonPress() {
     loop_flag = 0;
     Serial.println(" ");
     Serial.println("Next button interrupt occurred");
-
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
     if (score == 10) {
@@ -110,6 +108,9 @@ void NextButtonPress() {
 void SubmitButtonPress() {
     Serial.println(" ");
     Serial.println("Submit button interrupt occurred");
+    digitalWrite(Pin_Green_LED, LOW);
+    digitalWrite(Pin_Red_LED, LOW);
+    ReadFromBlocks();
     if (mode == 0) {
         ModeFunction0();
     }
@@ -193,6 +194,7 @@ void GenerateNumber() {
     digitalWrite(Pin_Display_Enable, LOW);
     SendDigitsToDisplay(Pin_Display_Data, (int)number/10, number%10);
     digitalWrite(Pin_Display_Enable, HIGH);
+    Serial.println(number);
 }
 
 
@@ -216,42 +218,56 @@ void ModeFunction0() {
     }
     // Comparison
     if (result == number) {
-        digitalWrite(Pin_Green_LED, HIGH);
         Serial.println("Mode 0 correct");
+        digitalWrite(Pin_Green_LED, HIGH);
     }
     else {
-        digitalWrite(Pin_Red_LED, HIGH);
         Serial.println("Mode 0 incorrect");
+        digitalWrite(Pin_Red_LED, HIGH);
     }
-    
+    Serial.println(num1);
+    Serial.println(op);
+    Serial.println(num2);
+    Serial.println(result);
+    Serial.println(number);
 }
 
 
 // Modes 1,2, and 3 - keep score and penalty
 void ModeFunction1to3() {
-    Serial.println("Mode 1");
+    Serial.println("Mode 1to3");
 
     int penalty = mode - 1; // Score reduction for incorrect answers
     int result = 0;         // Result of input operation
     // Operation based on input
     if (op == 0) {
+        Serial.println("Mode 1to3 addition");
         result = num1 + num2;
     }
     else if (op == 1) {
+        Serial.println("Mode 1to3 subtraction");
         result = num1 - num2;
     }
     else if (op == 2) {
+        Serial.println("Mode 1to3 multiplication");
         result = num1 * num2;
     }
     // Comparison
     if (result == number) {
+        Serial.println("Mode 1to3 correct");
         score++;
         digitalWrite(Pin_Green_LED, HIGH);
     }
     else {
+        Serial.println("Mode 1to3 incorrect");
         score = score - penalty;
         digitalWrite(Pin_Red_LED, HIGH);
     }
+    Serial.println(num1);
+    Serial.println(op);
+    Serial.println(num2);
+    Serial.println(result);
+    Serial.println(number);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -343,6 +359,8 @@ void setup() {
     // Pre-loop commands
     GenerateNumber();
     digitalWrite(Pin_Display_Enable, LOW);
+    digitalWrite(Pin_Green_LED, LOW);
+    digitalWrite(Pin_Red_LED, LOW);
 
     // Begin serial monitor at baud rate 9600
     // TODO: Serial to be used for debugging purposes
