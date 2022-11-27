@@ -88,9 +88,9 @@ void DisplayTest03();
 
 // ------------------------------------------------------------------------------------------------
 
-// Interrupt service routines (ISRs)
+// Interrupt service routines (ISRs).
 
-// To run when user presses next. TODO: implement the LED bar graph.
+// To run when user presses next. TODO: implement the LED bar graph, fix debounce.
 void NextButtonPress() {
     loop_flag = 0;
     Serial.println(" ");
@@ -104,7 +104,7 @@ void NextButtonPress() {
 }
 
 
-// To run when user submits an answer. TODO: implement the LED bar graph
+// To run when user submits an answer. TODO: implement the LED bar graph, fix debounce.
 void SubmitButtonPress() {
     Serial.println(" ");
     Serial.println("Submit button interrupt occurred");
