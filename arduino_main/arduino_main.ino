@@ -204,15 +204,15 @@ void ModeFunction0() {
     // Operation based on input
     if (op == 0) {
         Serial.println("Mode 0 addition");
-        int result = num1 + num2;
+        result = num1 + num2;
     }
     else if (op == 1) {
         Serial.println("Mode 0 subtraction");
-        int result = num1 - num2;
+        result = num1 - num2;
     }
     else if (op == 2) {
         Serial.println("Mode 0 multiplication");
-        int result = num1 * num2;
+        result = num1 * num2;
     }
     // Comparison
     if (result == number) {
@@ -220,8 +220,8 @@ void ModeFunction0() {
         Serial.println("Mode 0 correct");
     }
     else {
-        digitalWrite(Pin_Red_LED, LOW);
-        Serial.println("Mode 0 incorrect    ");
+        digitalWrite(Pin_Red_LED, HIGH);
+        Serial.println("Mode 0 incorrect");
     }
     
 }
@@ -235,20 +235,22 @@ void ModeFunction1to3() {
     int result = 0;         // Result of input operation
     // Operation based on input
     if (op == 0) {
-        int result = num1 + num2;
+        result = num1 + num2;
     }
     else if (op == 1) {
-        int result = num1 - num2;
+        result = num1 - num2;
     }
     else if (op == 2) {
-        int result = num1 * num2;
+        result = num1 * num2;
     }
     // Comparison
     if (result == number) {
         score++;
+        digitalWrite(Pin_Green_LED, HIGH);
     }
     else {
         score = score - penalty;
+        digitalWrite(Pin_Red_LED, HIGH);
     }
 }
 
