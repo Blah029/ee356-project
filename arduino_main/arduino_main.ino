@@ -10,11 +10,10 @@
  * E/17/234 Pandukabhaya V. K. M.
  * E/17/371 Warnakulasuriya R.
  */
-// ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
+
 // Pin designations
-// Synchronous clock
 const int Pin_CLK               =  4;  // Synchronous clock signal
 
 // Pins for the block inputs
@@ -30,39 +29,44 @@ const int Pin_Block_Shift_Load   = 12;  // Display SIPO(595) register SH/LD pin:
 const int Pin_Block_CLK_Inhibit  = 10;  // Display SIPO(595) register CLK INH pin
 const int Pin_Display_Data       =  5;  // Display SIPO(595) register SER pin
 const int Pin_Display_Reg_Enable =  8;  // Display SIPO(595) register OE  pin - negative logic
+const int Pin_Green_LED          = 15;  // Correct answer feedback LED pin
+const int Pin_Red_LED            = 16;  // Wrong answer feedback LED pin
 
 // Analog pins
 const int Pin_Battery_Level      = 14;  // Analog input pin for battery level
 
 //Interrupt pins
-const int Pin_Start_Interrupt    =  2;  // Start button pin
+const int Pin_Next_Interrupt     =  2;  // Next button pin
 const int Pin_Submit_Interrupt   =  3;  // Submit button pin
-// ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
+
 // Constant data
+
 // Possible number combinations
 int ValidNumberList[40] = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 
                             15, 16, 17, 18, 20, 21, 24, 25, 27, 28, 30, 32, 35, 36, 40, 
                             42, 45, 48, 49, 54, 56, 63, 64, 72, 81};
-// ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
+
 // Global Variables
 int ByteField[3] = {0, 0, 0}; // Bit field to store block data
                               // i = 0: Num1 block
                               // i = 1: Operator block
                               // i = 2: Num2 block
-int score   = 0; // Score accumulated by user
-int number  = 0; // Number to be made using num1, num2, and op 
+int score     = 0; // Score accumulated by user
+int number    = 0; // Number to be made using num1, num2, and op 
 
-int num1 = 0; // User input operand1
-int mode = 0; // User input mode select
-int op   = 0; // User input operator. 0 - addition, 1 - subtraction, 2 - mulitplication
-int num2 = 0; // User input operand 2
+int num1      = 0; // User input operand1
+int mode      = 0; // User input mode select
+int op        = 0; // User input operator. 0 - addition, 1 - subtraction, 2 - mulitplication
+int num2      = 0; // User input operand 2
+
+volatile int loop_flag = 0; // Break out of blink loop after interrupt
+
 // ------------------------------------------------------------------------------------------------
 
-// ------------------------------------------------------------------------------------------------
 // Function prototyping (declarations)
 void ReadFromBlocks();
 void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1);
@@ -70,15 +74,15 @@ int  ReadBatteryLevel();
 void GenerateNumber();
 void ModeFunction0();
 void ModeFunction1to3();
-void StartButtonPress();
+void NextButtonPress();
 void SubmitButtonPress();
 
 void DisplayTest01();
 void DisplayTest02();
 void DisplayTest03();
-// ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
+
 // Function definitions
 
 // Reads the parallel-in serial out registers (blocks)
@@ -147,7 +151,10 @@ void ModeFunction0 (){
     }
     // Comparison
     if (result == number) {
-        //fucntion to blink bar graph
+        digitalWrite(Pin_Green_LED, HIGH);
+    }
+    else {
+        digitalWrite(Pin_Red_LED, LOW);
     }
     
 }
@@ -177,11 +184,14 @@ void ModeFunction1to3() {
 }
 
 
-// To run when user presses start. TODO: implement LED bara graph.
-void StartButtonPress() {
-    score = 0;
-    //funciton to clear bar graph
-    SendDigitsToDisplay(Pin_Display_Data, (int)number/10, number%10);
+// To run when user presses next. TODO: implement LED bara graph.
+void NextButtonPress() {
+    loop_flag = 0;
+    digitalWrite(Pin_Green_LED, LOW);
+    digitalWrite(Pin_Red_LED, LOW);
+    if (score == 10) {
+        //clear bar graph
+    }
     GenerateNumber();
 }
 
@@ -197,12 +207,20 @@ void SubmitButtonPress() {
     }
     //function to update bar graph
     if (score == 10) {
-        //function to flash bar graph
+        loop_flag = 1;
+        while (loop) {
+            digitalWrite(Pin_Green_LED, HIGH);
+            //turn on all bar graph
+            delay(250);
+            digitalWrite(Pin_Green_LED, LOW);
+            //turn off all bar graph
+            delay(250);
+        }
     }
 }
-// ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
+
 // Test shift registers and seven segment display
 // Example code for serial communication for the 7SSDs
 void DisplayTest01() {
@@ -254,38 +272,41 @@ void DisplayTest02 (){
 void DisplayTest03() {
     SendDigitsToDisplay(Pin_Display_Data, 3,3);
 }
-// ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
+
 // Setup and Main Loop
 void setup() {
     // I/O pin setup
     // Digital outputs
-    pinMode(Pin_Block_Shift_Load,  OUTPUT); // 
-    pinMode(Pin_Block_CLK_Inhibit, OUTPUT); // 
+    pinMode(Pin_Block_Shift_Load,   OUTPUT);
+    pinMode(Pin_Block_CLK_Inhibit,  OUTPUT); 
 
     pinMode(Pin_Display_Enable,     OUTPUT); // Display  enable
     pinMode(Pin_Display_Reg_Enable, OUTPUT); // Display reg enable
-    pinMode(Pin_Display_Data,      OUTPUT); // Display serial out
-    pinMode(Pin_CLK,               OUTPUT); // Synchronous clock
+    pinMode(Pin_Display_Data,       OUTPUT); // Display serial out
+    pinMode(Pin_CLK,                OUTPUT); // Synchronous clock
+    pinMode(Pin_Green_LED,          OUTPUT);
+    pinMode(Pin_Red_LED,            OUTPUT);
 
     // Digital inputs
-    pinMode(Pin_Num1_Data,         INPUT);  // Operand 1 serial in
-    pinMode(Pin_Num2_Data,         INPUT);  // Operand 2 serial in
-    pinMode(Pin_Op_Data,           INPUT);  // Operator  serial in
+    pinMode(Pin_Num1_Data,          INPUT);  // Operand 1 serial in
+    pinMode(Pin_Num2_Data,          INPUT);  // Operand 2 serial in
+    pinMode(Pin_Op_Data,            INPUT);  // Operator  serial in
 
     // Analog inputs
-    pinMode(Pin_Battery_Level,  INPUT);  // Battery voltage
+    pinMode(Pin_Battery_Level,  INPUT);      // Battery voltage
 
+    // Iinterrupts
+    attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt), NextButtonPress, FALLING);
+    attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), SubmitButtonPress, FALLING);
     // Pre-loop commands
-    digitalWrite(Pin_Display_Enable, LOW); // Switch off the display (negative logic)
-    SendDigitsToDisplay(Pin_Display_Data, 0, 0);
-    digitalWrite(Pin_Display_Enable, HIGH); // Negative logic
+    GenerateNumber();
+    digitalWrite(Pin_Display_Enable, HIGH);
 }
 
 // Main loop
 void loop() {
-    StartButtonPress();
-    delay(500);
+    
 }
 // ------------------------------------------------------------------------------------------------
