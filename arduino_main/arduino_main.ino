@@ -32,7 +32,11 @@ const int Pin_Display_Data       =  5;  // Display SIPO(595) register SER pin
 const int Pin_Display_Reg_Enable =  8;  // Display SIPO(595) register OE  pin - negative logic
 
 // Analog pins
-const int Pin_Battery_Level     = 14;  // Analog input pin for battery level
+const int Pin_Battery_Level      = 14;  // Analog input pin for battery level
+
+//Interrupt pins
+const int Pin_Start_Interrupt    =  2;  // Start button pin
+const int Pin_Submit_Interrupt   =  3;  // Submit button pin
 // ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
@@ -120,10 +124,11 @@ int ReadBatteryLevel() {
 }
 
 
-// Select and return a random number from the list
+// Select a random number from the list and display
 void GenerateNumber() {
     srand(millis());
     number = ValidNumberList[rand()%40];
+    SendDigitsToDisplay(Pin_Display_Data, (int)number/10, number%10);
 }
 
 
@@ -177,6 +182,7 @@ void StartButtonPress() {
     score = 0;
     //funciton to clear bar graph
     SendDigitsToDisplay(Pin_Display_Data, (int)number/10, number%10);
+    GenerateNumber();
 }
 
 
@@ -279,6 +285,7 @@ void setup() {
 
 // Main loop
 void loop() {
-    DisplayTest02();
+    StartButtonPress();
+    delay(500);
 }
 // ------------------------------------------------------------------------------------------------
