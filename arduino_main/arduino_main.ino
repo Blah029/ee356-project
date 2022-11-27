@@ -14,18 +14,20 @@
 // ------------------------------------------------------------------------------------------------
 
 // Pin designations
-const int Pin_CLK               =  4;  // Synchronous clock signal
+const int Pin_CLK               =   4;  // Synchronous clock signal
 
 // Pins for the block inputs
 // TODO: Check whether we can use a common enable line for the three blocks (that would be easier)
 const int Pin_Num1_Data          = 11;  // Block 1 PISO(165) register Qh pin
 const int Pin_Op_Data            =  7;  // Operator block PISO(165) register Qh pin
 const int Pin_Num2_Data          =  9;  // Block 2 PISO(165) register Qh pin
-int Pin_Block_Array[3]           = {Pin_Num1_Data, Pin_Op_Data, Pin_Num2_Data}; // Array of input data pins
+
+// Array of input data pins
+int Pin_Block_Array[3]           = {Pin_Num1_Data, Pin_Op_Data, Pin_Num2_Data};
 
 // Pins for the display unit
 const int Pin_Display_Enable     =  6;  // BCD-7S Decoder(48) BI/RBO pin - negative logic
-const int Pin_Block_Shift_Load   = 12;  // Display SIPO(595) register SH/LD pin: high - shift, low - load
+const int Pin_Block_Shift_Load   = 12;  // Display SIPO(595) register SH/LD pin: H: shift, L: load
 const int Pin_Block_CLK_Inhibit  = 10;  // Display SIPO(595) register CLK INH pin
 const int Pin_Display_Data       =  5;  // Display SIPO(595) register SER pin
 const int Pin_Display_Reg_Enable =  8;  // Display SIPO(595) register OE  pin - negative logic
@@ -51,23 +53,26 @@ int ValidNumberList[40] = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 
 // ------------------------------------------------------------------------------------------------
 
 // Global Variables
-int ByteField[3] = {0, 0, 0}; // Bit field to store block data
-                              // i = 0: Num1 block
-                              // i = 1: Operator block
-                              // i = 2: Num2 block
-int score     = 0; // Score accumulated by user
-int number    = 0; // Number to be made using num1, num2, and op 
+int ByteField[3] = {0, 0, 0};           // Bit field to store block data
+                                        // i = 0: Num1 block
+                                        // i = 1: Operator block
+                                        // i = 2: Num2 block
 
-int num1      = 0; // User input operand1
-int mode      = 0; // User input mode select
-int op        = 0; // User input operator. 0 - addition, 1 - subtraction, 2 - mulitplication
-int num2      = 0; // User input operand 2
+// User inputs: variables
+int num1      = 0;                      // User input operand1
+int mode      = 0;                      // User input mode select
+int op        = 0;                      // User input operator
+                                        // 0 - Addition, 1 - Subtraction, 2 - Mulitplication
+int num2      = 0;                      // User input operand 2
 
-volatile int loop_flag = 0; // Break out of blink loop after interrupt
+volatile int loop_flag = 0;             // Break out of blink loop after interrupt
+
+int score     = 0;                      // Score accumulated by user
+int number    = 0;                      // Number to be made using num1, num2, and op 
 
 // ------------------------------------------------------------------------------------------------
 
-// Function prototyping (declarations)
+// Function prototypes (declarations)
 void NextButtonPress();
 void SubmitButtonPress();
 
@@ -86,7 +91,7 @@ void DisplayTest03();
 
 // Interrupt service routines
 
-// To run when user presses next. TODO: implement LED bara graph.
+// To run when user presses next. TODO: implement the LED bar graph.
 void NextButtonPress() {
     Serial.println(" ");
     Serial.println("next interrupt");
@@ -94,13 +99,13 @@ void NextButtonPress() {
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
     if (score == 10) {
-        //clear bar graph
+        // clear bar graph
     }
     GenerateNumber();
 }
 
 
-// To run when user submits an answer. TODO: implement LED bra graph
+// To run when user submits an answer. TODO: implement the LED bar graph
 void SubmitButtonPress() {
     Serial.println(" ");
     Serial.println("submit interrupt");
@@ -111,15 +116,15 @@ void SubmitButtonPress() {
     if (mode > 0 && mode <= 3) {
         ModeFunction1to3();
     }
-    //function to update bar graph
+    // Function to update the bar graph
     if (score == 10) {
         loop_flag = 1;
         while (loop) {
             digitalWrite(Pin_Green_LED, HIGH);
-            //turn on all bar graph
+            // Turn on all bar graph LEDs
             delay(250);
             digitalWrite(Pin_Green_LED, LOW);
-            //turn off all bar graph
+            // Turn off all bar graph LEDs
             delay(250);
         }
     }
@@ -133,12 +138,13 @@ void SubmitButtonPress() {
 // into bit fields BlockNum1, BlockOp, BlockNum2.
 void ReadFromBlocks() {
     Serial.println("Blocks read");
+
     for (int i = 0; i < 3; i++) {
         // Write a pulse to (SH/LD) pin (load the data to register)
         digitalWrite(Pin_Block_Shift_Load, LOW);  delayMicroseconds(5);
         digitalWrite(Pin_Block_Shift_Load, HIGH); delayMicroseconds(5);
 
-        digitalWrite(Pin_CLK, HIGH);
+        digitalWrite(Pin_CLK, HIGH); // Rise-edge CLK
         digitalWrite(Pin_Block_CLK_Inhibit, LOW);
 
         // Read raw data of byte i
@@ -146,8 +152,9 @@ void ReadFromBlocks() {
 
         digitalWrite(Pin_Block_CLK_Inhibit, HIGH);
 
-        digitalWrite(Pin_CLK, LOW);
+        digitalWrite(Pin_CLK, LOW); // Fall-edge CLK
     }
+
     num1 = ((ByteField[0] >> 4) & 0b00001111)*10 + (ByteField[0] & 0b00001111);
     mode = (ByteField[1] >> 4) & 0b00001111;
     op = ByteField[1] & 0b00001111;
@@ -257,9 +264,8 @@ void DisplayTest01() {
     delay(1000);
 }
 
-
 // Display input block values on SSD
-void DisplayTest02 (){
+void DisplayTest02 () {
     
     // TODO: do this reading part when an interrupt occurs
     ReadFromBlocks();
@@ -286,7 +292,7 @@ void DisplayTest02 (){
     delay(1000);
 }
 
-
+// Send two predefined digits to the display
 void DisplayTest03() {
     SendDigitsToDisplay(Pin_Display_Data, 3,3);
 }
@@ -316,11 +322,11 @@ void setup() {
     // Analog inputs
     pinMode(Pin_Battery_Level,      INPUT);  // Battery voltage
 
-    // Interrupt pins
+    // Interrupt pins: push buttons
     pinMode(Pin_Next_Interrupt,     INPUT_PULLUP);
     pinMode(Pin_Submit_Interrupt,   INPUT_PULLUP);
 
-    // Iinterrupts
+    // Set up interrupts
     attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt), NextButtonPress, RISING);
     attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), SubmitButtonPress, RISING);
 
@@ -329,11 +335,13 @@ void setup() {
     digitalWrite(Pin_Display_Enable, LOW);
 
     // Begin serial monitor at baud rate 9600
+    // TODO: for debugging purposes
     Serial.begin(9600);
 }
 
 // Main loop
 void loop() {
-
+    // Empty
+    // Interrupt-based program
 }
 // ------------------------------------------------------------------------------------------------
