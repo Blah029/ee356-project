@@ -20,4 +20,4 @@
 - proteus_simulation
   - Simulation of the project done in Proteus
 - prototype_layout
-  - Breadboard layout of the project prototype done in Friting
+  - Breadboard layout of the project prototype done in Fritzing
