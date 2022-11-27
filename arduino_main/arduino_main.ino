@@ -89,13 +89,14 @@ void DisplayTest03();
 
 // ------------------------------------------------------------------------------------------------
 
-// Interrupt service routines
+// Interrupt service routines (ISRs)
 
 // To run when user presses next. TODO: implement the LED bar graph.
 void NextButtonPress() {
-    Serial.println(" ");
-    Serial.println("next interrupt");
     loop_flag = 0;
+    Serial.println(" ");
+    Serial.println("Next button interrupt occurred");
+
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
     if (score == 10) {
@@ -108,7 +109,7 @@ void NextButtonPress() {
 // To run when user submits an answer. TODO: implement the LED bar graph
 void SubmitButtonPress() {
     Serial.println(" ");
-    Serial.println("submit interrupt");
+    Serial.println("Submit button interrupt occurred");
     if (mode == 0) {
         ModeFunction0();
         
@@ -119,12 +120,12 @@ void SubmitButtonPress() {
     // Function to update the bar graph
     if (score == 10) {
         loop_flag = 1;
-        while (loop) {
+        while (loop_flag) {
             digitalWrite(Pin_Green_LED, HIGH);
-            // Turn on all bar graph LEDs
+            // TODO: Turn on all bar graph LEDs
             delay(250);
             digitalWrite(Pin_Green_LED, LOW);
-            // Turn off all bar graph LEDs
+            // TODO: Turn off all bar graph LEDs
             delay(250);
         }
     }
@@ -137,7 +138,7 @@ void SubmitButtonPress() {
 // Reads the parallel-in serial out registers (blocks)
 // into bit fields BlockNum1, BlockOp, BlockNum2.
 void ReadFromBlocks() {
-    Serial.println("Blocks read");
+    Serial.println("Read from blocks");
 
     for (int i = 0; i < 3; i++) {
         // Write a pulse to (SH/LD) pin (load the data to register)
@@ -155,6 +156,7 @@ void ReadFromBlocks() {
         digitalWrite(Pin_CLK, LOW); // Fall-edge CLK
     }
 
+    // Interpret the read bit field and obtain the digits and the operator
     num1 = ((ByteField[0] >> 4) & 0b00001111)*10 + (ByteField[0] & 0b00001111);
     mode = (ByteField[1] >> 4) & 0b00001111;
     op = ByteField[1] & 0b00001111;
@@ -168,7 +170,6 @@ void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1) {
     digitalWrite(Pin_Display_Reg_Enable, LOW);
     shiftOut(data_pin, Pin_CLK, MSBFIRST, (digit_10 << 4) + digit_1);
     digitalWrite(Pin_Display_Reg_Enable, HIGH);
-
 }
 
 
@@ -182,9 +183,14 @@ int ReadBatteryLevel() {
 
 // Select a random number from the list and display
 void GenerateNumber() {
-    Serial.println("number generated");
-    srand(millis());
-    number = ValidNumberList[rand()%40];
+    Serial.println("Random number generated");
+
+    // Random number generator
+    int seed = millis();
+    srand(seed);
+    number = ValidNumberList[rand()%((int) sizeof(ValidNumberList))];
+
+    // Display the generated number
     digitalWrite(Pin_Display_Enable, LOW);
     SendDigitsToDisplay(Pin_Display_Data, (int)number/10, number%10);
     digitalWrite(Pin_Display_Enable, HIGH);
@@ -192,7 +198,7 @@ void GenerateNumber() {
 
 
 // Mode 0 - continuous problems, no score keeping. TODO: Implement bar graph
-void ModeFunction0 (){
+void ModeFunction0 () {
     Serial.println("Mode 0");
     int result = 0; // Result of input operation
     // Operation based on input
@@ -327,7 +333,7 @@ void setup() {
     pinMode(Pin_Submit_Interrupt,   INPUT_PULLUP);
 
     // Set up interrupts
-    attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt), NextButtonPress, RISING);
+    attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt),   NextButtonPress,   RISING);
     attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), SubmitButtonPress, RISING);
 
     // Pre-loop commands
@@ -335,7 +341,7 @@ void setup() {
     digitalWrite(Pin_Display_Enable, LOW);
 
     // Begin serial monitor at baud rate 9600
-    // TODO: for debugging purposes
+    // TODO: Serial to be used for debugging purposes
     Serial.begin(9600);
 }
 
