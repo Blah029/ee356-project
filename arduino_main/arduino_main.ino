@@ -68,14 +68,15 @@ volatile int loop_flag = 0; // Break out of blink loop after interrupt
 // ------------------------------------------------------------------------------------------------
 
 // Function prototyping (declarations)
+void NextButtonPress();
+void SubmitButtonPress();
+
 void ReadFromBlocks();
 void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1);
 int  ReadBatteryLevel();
 void GenerateNumber();
 void ModeFunction0();
 void ModeFunction1to3();
-void NextButtonPress();
-void SubmitButtonPress();
 
 void DisplayTest01();
 void DisplayTest02();
@@ -83,11 +84,55 @@ void DisplayTest03();
 
 // ------------------------------------------------------------------------------------------------
 
-// Function definitions
+// Interrupt service routines
+
+// To run when user presses next. TODO: implement LED bara graph.
+void NextButtonPress() {
+    Serial.println(" ");
+    Serial.println("next interrupt");
+    loop_flag = 0;
+    digitalWrite(Pin_Green_LED, LOW);
+    digitalWrite(Pin_Red_LED, LOW);
+    if (score == 10) {
+        //clear bar graph
+    }
+    GenerateNumber();
+}
+
+
+// To run when user submits an answer. TODO: implement LED bra graph
+void SubmitButtonPress() {
+    Serial.println(" ");
+    Serial.println("submit interrupt");
+    if (mode == 0) {
+        ModeFunction0();
+        
+    }
+    if (mode > 0 && mode <= 3) {
+        ModeFunction1to3();
+    }
+    //function to update bar graph
+    if (score == 10) {
+        loop_flag = 1;
+        while (loop) {
+            digitalWrite(Pin_Green_LED, HIGH);
+            //turn on all bar graph
+            delay(250);
+            digitalWrite(Pin_Green_LED, LOW);
+            //turn off all bar graph
+            delay(250);
+        }
+    }
+}
+
+// ------------------------------------------------------------------------------------------------
+
+// Main functions
 
 // Reads the parallel-in serial out registers (blocks)
 // into bit fields BlockNum1, BlockOp, BlockNum2.
 void ReadFromBlocks() {
+    Serial.println("Blocks read");
     for (int i = 0; i < 3; i++) {
         // Write a pulse to (SH/LD) pin (load the data to register)
         digitalWrite(Pin_Block_Shift_Load, LOW);  delayMicroseconds(5);
@@ -130,31 +175,40 @@ int ReadBatteryLevel() {
 
 // Select a random number from the list and display
 void GenerateNumber() {
+    Serial.println("number generated");
     srand(millis());
     number = ValidNumberList[rand()%40];
+    digitalWrite(Pin_Display_Enable, LOW);
     SendDigitsToDisplay(Pin_Display_Data, (int)number/10, number%10);
+    digitalWrite(Pin_Display_Enable, HIGH);
 }
 
 
 // Mode 0 - continuous problems, no score keeping. TODO: Implement bar graph
 void ModeFunction0 (){
+    Serial.println("Mode 0");
     int result = 0; // Result of input operation
     // Operation based on input
     if (op == 0) {
+        Serial.println("    Mode 0 addition");
         int result = num1 + num2;
     }
     else if (op == 1) {
+        Serial.println("    Mode 0 subtraction");
         int result = num1 - num2;
     }
     else if (op == 2) {
+        Serial.println("    Mode 0 multiplication");
         int result = num1 * num2;
     }
     // Comparison
     if (result == number) {
         digitalWrite(Pin_Green_LED, HIGH);
+        Serial.println("Mode 0 correct");
     }
     else {
         digitalWrite(Pin_Red_LED, LOW);
+        Serial.println("Mode 0 incorrect    ");
     }
     
 }
@@ -183,43 +237,9 @@ void ModeFunction1to3() {
     }
 }
 
-
-// To run when user presses next. TODO: implement LED bara graph.
-void NextButtonPress() {
-    loop_flag = 0;
-    digitalWrite(Pin_Green_LED, LOW);
-    digitalWrite(Pin_Red_LED, LOW);
-    if (score == 10) {
-        //clear bar graph
-    }
-    GenerateNumber();
-}
-
-
-// To run when user submits an answer. TODO: implement LED bra graph
-void SubmitButtonPress() {
-    if (mode == 0) {
-        ModeFunction0();
-        
-    }
-    if (mode > 0 && mode <= 3) {
-        ModeFunction1to3();
-    }
-    //function to update bar graph
-    if (score == 10) {
-        loop_flag = 1;
-        while (loop) {
-            digitalWrite(Pin_Green_LED, HIGH);
-            //turn on all bar graph
-            delay(250);
-            digitalWrite(Pin_Green_LED, LOW);
-            //turn off all bar graph
-            delay(250);
-        }
-    }
-}
-
 // ------------------------------------------------------------------------------------------------
+
+// Test functions
 
 // Test shift registers and seven segment display
 // Example code for serial communication for the 7SSDs
@@ -264,8 +284,6 @@ void DisplayTest02 (){
 
     digitalWrite(Pin_Display_Enable, LOW);
     delay(1000);
-
-    //DisplayTest00To99();
 }
 
 
@@ -275,9 +293,10 @@ void DisplayTest03() {
 
 // ------------------------------------------------------------------------------------------------
 
-// Setup and Main Loop
+// Setup
 void setup() {
     // I/O pin setup
+
     // Digital outputs
     pinMode(Pin_Block_Shift_Load,   OUTPUT);
     pinMode(Pin_Block_CLK_Inhibit,  OUTPUT); 
@@ -295,18 +314,26 @@ void setup() {
     pinMode(Pin_Op_Data,            INPUT);  // Operator  serial in
 
     // Analog inputs
-    pinMode(Pin_Battery_Level,  INPUT);      // Battery voltage
+    pinMode(Pin_Battery_Level,      INPUT);  // Battery voltage
+
+    // Interrupt pins
+    pinMode(Pin_Next_Interrupt,     INPUT_PULLUP);
+    pinMode(Pin_Submit_Interrupt,   INPUT_PULLUP);
 
     // Iinterrupts
-    attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt), NextButtonPress, FALLING);
-    attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), SubmitButtonPress, FALLING);
+    attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt), NextButtonPress, RISING);
+    attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), SubmitButtonPress, RISING);
+
     // Pre-loop commands
     GenerateNumber();
-    digitalWrite(Pin_Display_Enable, HIGH);
+    digitalWrite(Pin_Display_Enable, LOW);
+
+    // Begin serial monitor at baud rate 9600
+    Serial.begin(9600);
 }
 
 // Main loop
 void loop() {
-    
+
 }
 // ------------------------------------------------------------------------------------------------
