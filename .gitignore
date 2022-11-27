@@ -1,0 +1,5 @@
+# vs code configuration
+.vscode/
+# proteus backup
+proteus_simulation/*
+!proteus_simulation/proteus_simulation.pdsprj
