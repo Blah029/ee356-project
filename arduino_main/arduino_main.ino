@@ -186,9 +186,7 @@ void GenerateNumber() {
     Serial.println("Random number generated");
 
     // Random number generator
-    int seed = millis();
-    srand(seed);
-    number = ValidNumberList[rand()%((int) sizeof(ValidNumberList))];
+    number = ValidNumberList[random(40)];
 
     // Display the generated number
     digitalWrite(Pin_Display_Enable, LOW);
@@ -362,9 +360,8 @@ void setup() {
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
 
-    // Begin serial monitor at baud rate 9600
-    // TODO: Serial to be used for debugging purposes
-    Serial.begin(9600);
+    Serial.begin(9600); // Begin serial monitor at baud rate 9600
+    randomSeed(analogRead(Pin_Battery_Level));
 }
 
 // Main loop
