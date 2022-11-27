@@ -100,7 +100,7 @@ void NextButtonPress() {
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
     if (score == 10) {
-        // clear bar graph
+        // TODO: clear bar graph
     }
     GenerateNumber();
 }
@@ -116,7 +116,7 @@ void SubmitButtonPress() {
     if (mode > 0 && mode <= 3) {
         ModeFunction1to3();
     }
-    // Function to update the bar graph
+    // TODO: update the bar graph
     if (score == 10) {
         loop_flag = 1;
         while (loop_flag) {
