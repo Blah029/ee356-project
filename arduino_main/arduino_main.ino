@@ -112,7 +112,6 @@ void SubmitButtonPress() {
     Serial.println("Submit button interrupt occurred");
     if (mode == 0) {
         ModeFunction0();
-        
     }
     if (mode > 0 && mode <= 3) {
         ModeFunction1to3();
@@ -198,8 +197,9 @@ void GenerateNumber() {
 
 
 // Mode 0 - continuous problems, no score keeping. TODO: Implement bar graph
-void ModeFunction0 () {
+void ModeFunction0() {
     Serial.println("Mode 0");
+
     int result = 0; // Result of input operation
     // Operation based on input
     if (op == 0) {
@@ -229,6 +229,8 @@ void ModeFunction0 () {
 
 // Modes 1,2, and 3 - keep score and penalty
 void ModeFunction1to3() {
+    Serial.println("Mode 1");
+
     int penalty = mode - 1; // Score reduction for incorrect answers
     int result = 0;         // Result of input operation
     // Operation based on input
