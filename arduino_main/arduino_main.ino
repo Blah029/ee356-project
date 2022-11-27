@@ -190,15 +190,15 @@ void ModeFunction0 (){
     int result = 0; // Result of input operation
     // Operation based on input
     if (op == 0) {
-        Serial.println("    Mode 0 addition");
+        Serial.println("Mode 0 addition");
         int result = num1 + num2;
     }
     else if (op == 1) {
-        Serial.println("    Mode 0 subtraction");
+        Serial.println("Mode 0 subtraction");
         int result = num1 - num2;
     }
     else if (op == 2) {
-        Serial.println("    Mode 0 multiplication");
+        Serial.println("Mode 0 multiplication");
         int result = num1 * num2;
     }
     // Comparison
