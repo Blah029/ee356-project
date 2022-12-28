@@ -27,11 +27,12 @@ int Pin_Block_Array[3]           = {Pin_Num1_Data, Pin_Op_Data, Pin_Num2_Data};
 // Pins for the display unit
 const int Pin_Display_Enable     =  6;  // BCD-7S Decoder(48) BI/RBO pin - negative logic
 const int Pin_Block_Shift_Load   = 12;  // Display SIPO(595) register SH/LD pin: H: shift, L: load
-const int Pin_Block_CLK_Inhibit  = 10;  // Display SIPO(595) register CLK INH pin
+const int Pin_Block_CLK_Inhibit  = 17;  // Display SIPO(595) register CLK INH pin
 const int Pin_Display_Data       =  5;  // Display SIPO(595) register SER pin
 const int Pin_Display_Reg_Enable =  8;  // Display SIPO(595) register OE  pin - negative logic
 const int Pin_Green_LED          = 15;  // Correct answer feedback LED pin
 const int Pin_Red_LED            = 16;  // Wrong answer feedback LED pin
+const int Pin_BarGraph_PWM       = 10;  // LED bar graph for score keeping
 
 // Analog pins
 const int Pin_Battery_Level      = 14;  // Analog input pin for battery level
