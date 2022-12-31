@@ -1,0 +1,8 @@
+Added Component: Designator=PTH1(PTH 2mm)
+Added Component: Designator=PTH2(PTH 2mm)
+Added Component: Designator=PTH3(PTH 2mm)
+Added Component: Designator=PTH4(PTH 2mm)
+Added Pin To Net: NetName=GND Pin=PTH1-1
+Added Pin To Net: NetName=GND Pin=PTH2-1
+Added Pin To Net: NetName=GND Pin=PTH3-1
+Added Pin To Net: NetName=GND Pin=PTH4-1
