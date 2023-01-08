@@ -1,14 +1,10 @@
-Project Outputs Generation Report
----------------------------------
-Start Output Generation At 8:28:12 PM On 08 Jan 2023
-
-Output: Bill of Materials
-Type  : BOM
-From  : Variant [[No Variations]] of Project [PCB_Project.PrjPcb]
-   Generated File[Bill of Materials-PCB_Project.xlsx]
+Output: Export STEP
+Type  : ExportSTEP
+From  : Variant [[No Variations]] of PCB Document [PCB1.PcbDoc]
+   Generated File[PCB1.step]
 
 
 Files Generated   : 1
 Documents Printed : 0
 
-Finished Output Generation At 8:28:22 PM On 08 Jan 2023
+Finished Output Generation At 9:59:06 PM On 08 Jan 2023
