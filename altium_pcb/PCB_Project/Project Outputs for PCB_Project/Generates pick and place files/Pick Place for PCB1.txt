@@ -4,13 +4,15 @@ D:\continuum\eng\elec\y3s2\ee356\projects\ee356-project\ee356-project\altium_pcb
 ========================================================================================================================
 File Design Information:
 
-Date:       08 01 23
-Time:       21:58
-Revision:   1a203b124e43851bd7c5b584df1e1bea1b1757e4
+Date:       08 02 23
+Time:       13:21
+Revision:   d6d8d353266aa7cf52f9f34d168a178289211f49
 Variant:    No variations
 Units used: mil
 
 Designator Comment                Layer    Footprint                Center-X(mil) Center-Y(mil) Rotation Description                                                                                                  
+R?         1K                     TopLayer CFR_400mil               7500.000      -2578.347     90       "General Type Carbon Film Resistor 1kOhm 1/4W 5% Axial Bulk"                                                 
+C?         "100 pF"               TopLayer KEMT-C315-THT-2          7300.000      -2378.347     0        "Capacitor, Ceramic, 100 pF, +/-10 %, 100 V, -55 to 125 degC, 2-Pin THD, RoHS, Bulk"                         
 X1         "16 MHz Crystal"       TopLayer CRYSTAL_OSC_TH           1700.000      -2600.001     0        "Crystal 16MHz ±50ppm (Tol) ±50ppm (Stability) 20pF FUND 30Ohm 2-Pin DIP HC-49/S Thru-Hole Bulk"             
 C4         "22 pF"                TopLayer KEMT-C315-THT-2          1550.000      -2750.001     0        "Capacitor, Ceramic, 22 pF, +/-10 %, 100 V, -55 to 125 degC, 2-Pin THD, RoHS, Bulk"                          
 C3         "22 pF"                TopLayer KEMT-C315-THT-2          1850.000      -2750.001     180      "Capacitor, Ceramic, 22 pF, +/-10 %, 100 V, -55 to 125 degC, 2-Pin THD, RoHS, Bulk"                          
