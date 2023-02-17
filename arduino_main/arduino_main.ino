@@ -66,6 +66,8 @@ int op        = 0;                      // User input operator
 int num2      = 0;                      // User input operand 2
 
 volatile int loop_flag = 0;             // Break out of blink loop after interrupt
+volatile int blocks_flag = 0;        // Check proper connection of input blocks
+
 
 int score     = 0;                      // Score accumulated by user
 int number    = 0;                      // Number to be made using num1, num2, and op 
@@ -107,28 +109,37 @@ void NextButtonPress() {
 
 // To run when user submits an answer. TODO: implement the LED bar graph, fix debounce.
 void SubmitButtonPress() {
+    blocks_flag = 0;
     Serial.println(" ");
     Serial.println("Submit button interrupt occurred");
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
     ReadFromBlocks();
-    if (mode == 0) {
-        ModeFunction0();
-    }
-    if (mode > 0 && mode <= 3) {
-        ModeFunction1to3();
-    }
-    // TODO: update the bar graph
-    if (score == 10) {
-        loop_flag = 1;
-        while (loop_flag) {
-            digitalWrite(Pin_Green_LED, HIGH);
-            // TODO: Turn on all bar graph LEDs
-            delay(250);
-            digitalWrite(Pin_Green_LED, LOW);
-            // TODO: Turn off all bar graph LEDs
-            delay(250);
+    if (blocks_flag == 1) {
+        if (mode == 0) {
+            ModeFunction0();
         }
+        if (mode > 0 && mode <= 3) {
+            ModeFunction1to3();
+        }
+        // TODO: update the bar graph
+        if (score == 10) {
+            loop_flag = 1;
+            while (loop_flag) {
+                digitalWrite(Pin_Green_LED, HIGH);
+                // TODO: Turn on all bar graph LEDs
+                delay(250);
+                digitalWrite(Pin_Green_LED, LOW);
+                // TODO: Turn off all bar graph LEDs
+                delay(250);
+            }
+        }
+    }
+    else {
+        digitalWrite(Pin_Red_LED, HIGH);
+        delay(250);
+        digitalWrite(Pin_Red_LED, LOW);
+        delay(250);
     }
 }
 
@@ -151,17 +162,24 @@ void ReadFromBlocks() {
 
         // Read raw data of byte i
         ByteField[i] = ~shiftIn(Pin_Block_Array[i], Pin_CLK, MSBFIRST);
-
         digitalWrite(Pin_Block_CLK_Inhibit, HIGH);
-
         digitalWrite(Pin_CLK, LOW); // Fall-edge CLK
     }
-
     // Interpret the read bit field and obtain the digits and the operator
-    num1 = ((ByteField[0] >> 4) & 0b00001111)*10 + (ByteField[0] & 0b00001111);
-    mode = (ByteField[1] >> 4) & 0b00001111;
-    op = ByteField[1] & 0b00001111;
-    num2 = ((ByteField[2] >> 4) & 0b00001111)*10 + (ByteField[2] & 0b00001111);
+    if ((ByteField[0] >> 7) & 0b00000001 && (ByteField[1] >> 7) & 0b00000001 &&(ByteField[0] >> 7) & 0b00000001) {
+        blocks_flag = 1;
+        num1 = ((ByteField[0] >> 4) & 0b00000111)*10 + (ByteField[0] & 0b00001111);
+        mode = (ByteField[1] >> 4) & 0b00000111;
+        op = ByteField[1] & 0b00001111;
+        num2 = ((ByteField[2] >> 4) & 0b00000111)*10 + (ByteField[2] & 0b00001111);
+    }
+    else {
+        blocks_flag = 0;
+        num1 = 0;
+        mode = 0;
+        op = 0;
+        num2 = 0;
+    }
 }
 
 
