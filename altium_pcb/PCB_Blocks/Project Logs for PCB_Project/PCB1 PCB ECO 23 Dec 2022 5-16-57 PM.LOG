@@ -1,0 +1,84 @@
+Removed Pin From Net: NetName=GND Pin=R27-1
+Removed Pin From Net: NetName=NetP6_1 Pin=R27-2
+Removed Pin From Net: NetName=GND Pin=R28-1
+Removed Pin From Net: NetName=NetP6_2 Pin=R28-2
+Removed Pin From Net: NetName=GND Pin=R29-1
+Removed Pin From Net: NetName=NetP6_3 Pin=R29-2
+Removed Pin From Net: NetName=GND Pin=R30-1
+Removed Pin From Net: NetName=NetP6_4 Pin=R30-2
+Removed Pin From Net: NetName=GND Pin=R31-1
+Removed Pin From Net: NetName=NetP7_1 Pin=R31-2
+Removed Pin From Net: NetName=GND Pin=R32-1
+Removed Pin From Net: NetName=NetP7_2 Pin=R32-2
+Removed Pin From Net: NetName=GND Pin=R33-1
+Removed Pin From Net: NetName=NetP7_3 Pin=R33-2
+Removed Pin From Net: NetName=GND Pin=R34-1
+Removed Pin From Net: NetName=NetP7_4 Pin=R34-2
+Removed Pin From Net: NetName=GND Pin=R35-1
+Removed Pin From Net: NetName=NetP8_1 Pin=R35-2
+Removed Pin From Net: NetName=GND Pin=R36-1
+Removed Pin From Net: NetName=NetP8_2 Pin=R36-2
+Removed Pin From Net: NetName=GND Pin=R37-1
+Removed Pin From Net: NetName=NetP8_3 Pin=R37-2
+Removed Pin From Net: NetName=GND Pin=R38-1
+Removed Pin From Net: NetName=NetP8_4 Pin=R38-2
+Change Comment: Unknown Component : R27
+Change Comment: Unknown Component : R28
+Change Comment: Unknown Component : R29
+Change Comment: Unknown Component : R30
+Change Comment: Unknown Component : R31
+Change Comment: Unknown Component : R32
+Change Comment: Unknown Component : R33
+Change Comment: Unknown Component : R34
+Change Comment: Unknown Component : R35
+Change Comment: Unknown Component : R36
+Change Comment: Unknown Component : R37
+Change Comment: Unknown Component : R38
+Change Managed Component Library Link: Component "R27" not found
+Change Managed Component Library Link: Component "R28" not found
+Change Managed Component Library Link: Component "R29" not found
+Change Managed Component Library Link: Component "R30" not found
+Change Managed Component Library Link: Component "R31" not found
+Change Managed Component Library Link: Component "R32" not found
+Change Managed Component Library Link: Component "R33" not found
+Change Managed Component Library Link: Component "R34" not found
+Change Managed Component Library Link: Component "R35" not found
+Change Managed Component Library Link: Component "R36" not found
+Change Managed Component Library Link: Component "R37" not found
+Change Managed Component Library Link: Component "R38" not found
+Change component parameters: Component "R27" not found
+Change component parameters: Component "R28" not found
+Change component parameters: Component "R29" not found
+Change component parameters: Component "R30" not found
+Change component parameters: Component "R31" not found
+Change component parameters: Component "R32" not found
+Change component parameters: Component "R33" not found
+Change component parameters: Component "R34" not found
+Change component parameters: Component "R35" not found
+Change component parameters: Component "R36" not found
+Change component parameters: Component "R37" not found
+Change component parameters: Component "R38" not found
+Add Pin To Net: Unknown Pin: Pin R27-1
+Add Pin To Net: Unknown Pin: Pin R27-2
+Add Pin To Net: Unknown Pin: Pin R28-1
+Add Pin To Net: Unknown Pin: Pin R28-2
+Add Pin To Net: Unknown Pin: Pin R29-1
+Add Pin To Net: Unknown Pin: Pin R29-2
+Add Pin To Net: Unknown Pin: Pin R30-1
+Add Pin To Net: Unknown Pin: Pin R30-2
+Add Pin To Net: Unknown Pin: Pin R31-1
+Add Pin To Net: Unknown Pin: Pin R31-2
+Add Pin To Net: Unknown Pin: Pin R32-1
+Add Pin To Net: Unknown Pin: Pin R32-2
+Add Pin To Net: Unknown Pin: Pin R33-1
+Add Pin To Net: Unknown Pin: Pin R33-2
+Add Pin To Net: Unknown Pin: Pin R34-1
+Add Pin To Net: Unknown Pin: Pin R34-2
+Add Pin To Net: Unknown Pin: Pin R35-1
+Add Pin To Net: Unknown Pin: Pin R35-2
+Add Pin To Net: Unknown Pin: Pin R36-1
+Add Pin To Net: Unknown Pin: Pin R36-2
+Add Pin To Net: Unknown Pin: Pin R37-1
+Add Pin To Net: Unknown Pin: Pin R37-2
+Add Pin To Net: Unknown Pin: Pin R38-1
+Add Pin To Net: Unknown Pin: Pin R38-2

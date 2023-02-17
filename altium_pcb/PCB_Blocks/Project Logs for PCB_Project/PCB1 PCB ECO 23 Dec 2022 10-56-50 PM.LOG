@@ -1,0 +1,206 @@
+Removed Pin From Net: NetName=VCC Pin=J1-5
+Removed Pin From Net: NetName=VCC Pin=J2-5
+Removed Pin From Net: NetName=VCC Pin=J4-3
+Removed Pin From Net: NetName=VCC Pin=J5-3
+Removed Pin From Net: NetName=GND Pin=J6-5
+Removed Pin From Net: NetName=GND Pin=J7-5
+Removed Pin From Net: NetName=VCC Pin=J9-3
+Removed Pin From Net: NetName=VCC Pin=J10-3
+Added Component: Designator=BLK1(Block_6x5)
+Added Component: Designator=BLK2(Block_6x5)
+Added Component: Designator=SD1(CA 7SD)
+Add component (AddParameter): Name = "Case/Package"; Value = "DIP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Category"; Value = "LED Displays"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Color"; Value = "Green"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "https://datasheet.ciiva.com/16294/lds-a5642ri-16294404.pdf?src-supplier=Future+Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "https://datasheet.ciiva.com/16294/lds-a5642ri-16294404.pdf?src-supplier=Future+Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2Description"; Value = "https://datasheet.ciiva.com/4421/lds-a5642ri-33718-4421941.pdf?src-supplier=Mouser"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2URL"; Value = "https://datasheet.ciiva.com/4421/lds-a5642ri-33718-4421941.pdf?src-supplier=Mouser"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink3Description"; Value = "https://datasheet.ciiva.com/30079/lds-a5642ri-30079851.pdf?src-supplier=Onlinecomponents.com"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink3URL"; Value = "https://datasheet.ciiva.com/30079/lds-a5642ri-30079851.pdf?src-supplier=Onlinecomponents.com"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Display Type"; Value = "Segment"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Element Configuration"; Value = "Common Anode"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Forward Current"; Value = "10mA"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Forward Voltage"; Value = "2.2V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "0.32inch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Illumination Color"; Value = "Green"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Lead Free"; Value = "Lead Free"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Length"; Value = "0.67inch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Luminous Intensity"; Value = "3.9mcd"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "Lumex"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "LDS-A5642RI"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max Operating Temperature"; Value = "85°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max Power Dissipation"; Value = "105mW"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Min Operating Temperature"; Value = "-40°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mount"; Value = "Through Hole"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of Contacts"; Value = "10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of LEDs"; Value = "8"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of Pins"; Value = "10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Operating Supply Voltage"; Value = "2.2V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package Quantity"; Value = "40"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Packaging"; Value = "Bulk"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power Consumption"; Value = "105mW"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pricing 1"; Value = "1=0.91500, 50=0.88000, 200=0.84000, 750=0.80500, 2500=0.74000 (USD)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS"; Value = "Yes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS Compliant"; Value = "Yes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "Future Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "8628562"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Test Current"; Value = "10mA"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Viewing Area (height)"; Value = "14.2mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Wavelength"; Value = "565nm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Width"; Value = "0.5inch"; VariantName = "[No Variations]"
+Added Component: Designator=SD2(CA 7SD)
+Add component (AddParameter): Name = "Case/Package"; Value = "DIP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Category"; Value = "LED Displays"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Color"; Value = "Green"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "https://datasheet.ciiva.com/16294/lds-a5642ri-16294404.pdf?src-supplier=Future+Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "https://datasheet.ciiva.com/16294/lds-a5642ri-16294404.pdf?src-supplier=Future+Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2Description"; Value = "https://datasheet.ciiva.com/4421/lds-a5642ri-33718-4421941.pdf?src-supplier=Mouser"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2URL"; Value = "https://datasheet.ciiva.com/4421/lds-a5642ri-33718-4421941.pdf?src-supplier=Mouser"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink3Description"; Value = "https://datasheet.ciiva.com/30079/lds-a5642ri-30079851.pdf?src-supplier=Onlinecomponents.com"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink3URL"; Value = "https://datasheet.ciiva.com/30079/lds-a5642ri-30079851.pdf?src-supplier=Onlinecomponents.com"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Display Type"; Value = "Segment"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Element Configuration"; Value = "Common Anode"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Forward Current"; Value = "10mA"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Forward Voltage"; Value = "2.2V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "0.32inch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Illumination Color"; Value = "Green"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Lead Free"; Value = "Lead Free"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Length"; Value = "0.67inch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Luminous Intensity"; Value = "3.9mcd"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "Lumex"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "LDS-A5642RI"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max Operating Temperature"; Value = "85°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max Power Dissipation"; Value = "105mW"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Min Operating Temperature"; Value = "-40°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mount"; Value = "Through Hole"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of Contacts"; Value = "10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of LEDs"; Value = "8"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of Pins"; Value = "10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Operating Supply Voltage"; Value = "2.2V"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package Quantity"; Value = "40"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Packaging"; Value = "Bulk"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power Consumption"; Value = "105mW"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pricing 1"; Value = "1=0.91500, 50=0.88000, 200=0.84000, 750=0.80500, 2500=0.74000 (USD)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS"; Value = "Yes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS Compliant"; Value = "Yes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "Future Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "8628562"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Test Current"; Value = "10mA"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Viewing Area (height)"; Value = "14.2mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Wavelength"; Value = "565nm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Width"; Value = "0.5inch"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=VCC Pin=BLK1-5
+Added Pin To Net: NetName=GND Pin=BLK1-10
+Added Pin To Net: NetName=VCC Pin=BLK2-5
+Added Pin To Net: NetName=GND Pin=BLK2-10
+Added Pin To Net: NetName=VCC Pin=SD1-3
+Added Pin To Net: NetName=VCC Pin=SD1-8
+Added Pin To Net: NetName=VCC Pin=SD2-3
+Added Pin To Net: NetName=VCC Pin=SD2-8
+Added Pin To Net: NetName=NetBLK1_1 Pin=BLK1-1
+Added Pin To Net: NetName=NetBLK1_1 Pin=R9-1
+Added Pin To Net: NetName=NetBLK1_1 Pin=U3-3
+Added Net: Name=NetBLK1_1
+Added Pin To Net: NetName=NetBLK1_2 Pin=BLK1-2
+Added Pin To Net: NetName=NetBLK1_2 Pin=R10-1
+Added Pin To Net: NetName=NetBLK1_2 Pin=U3-4
+Added Net: Name=NetBLK1_2
+Added Pin To Net: NetName=NetBLK1_3 Pin=BLK1-3
+Added Pin To Net: NetName=NetBLK1_3 Pin=R11-1
+Added Pin To Net: NetName=NetBLK1_3 Pin=U3-5
+Added Net: Name=NetBLK1_3
+Added Pin To Net: NetName=NetBLK1_4 Pin=BLK1-4
+Added Pin To Net: NetName=NetBLK1_4 Pin=R12-1
+Added Pin To Net: NetName=NetBLK1_4 Pin=U3-6
+Added Net: Name=NetBLK1_4
+Added Pin To Net: NetName=NetBLK1_6 Pin=BLK1-6
+Added Pin To Net: NetName=NetBLK1_6 Pin=R27-1
+Added Pin To Net: NetName=NetBLK1_6 Pin=U3-14
+Added Net: Name=NetBLK1_6
+Added Pin To Net: NetName=NetBLK1_7 Pin=BLK1-7
+Added Pin To Net: NetName=NetBLK1_7 Pin=R28-1
+Added Pin To Net: NetName=NetBLK1_7 Pin=U3-13
+Added Net: Name=NetBLK1_7
+Added Pin To Net: NetName=NetBLK1_8 Pin=BLK1-8
+Added Pin To Net: NetName=NetBLK1_8 Pin=R29-1
+Added Pin To Net: NetName=NetBLK1_8 Pin=U3-12
+Added Net: Name=NetBLK1_8
+Added Pin To Net: NetName=NetBLK1_9 Pin=BLK1-9
+Added Pin To Net: NetName=NetBLK1_9 Pin=R30-1
+Added Pin To Net: NetName=NetBLK1_9 Pin=U3-11
+Added Net: Name=NetBLK1_9
+Added Pin To Net: NetName=NetBLK2_1 Pin=BLK2-1
+Added Pin To Net: NetName=NetBLK2_1 Pin=R13-1
+Added Pin To Net: NetName=NetBLK2_1 Pin=U4-3
+Added Net: Name=NetBLK2_1
+Added Pin To Net: NetName=NetBLK2_2 Pin=BLK2-2
+Added Pin To Net: NetName=NetBLK2_2 Pin=R14-1
+Added Pin To Net: NetName=NetBLK2_2 Pin=U4-4
+Added Net: Name=NetBLK2_2
+Added Pin To Net: NetName=NetBLK2_3 Pin=BLK2-3
+Added Pin To Net: NetName=NetBLK2_3 Pin=R15-1
+Added Pin To Net: NetName=NetBLK2_3 Pin=U4-5
+Added Net: Name=NetBLK2_3
+Added Pin To Net: NetName=NetBLK2_4 Pin=BLK2-4
+Added Pin To Net: NetName=NetBLK2_4 Pin=R16-1
+Added Pin To Net: NetName=NetBLK2_4 Pin=U4-6
+Added Net: Name=NetBLK2_4
+Added Pin To Net: NetName=NetBLK2_6 Pin=BLK2-6
+Added Pin To Net: NetName=NetBLK2_6 Pin=R31-1
+Added Pin To Net: NetName=NetBLK2_6 Pin=U4-14
+Added Net: Name=NetBLK2_6
+Added Pin To Net: NetName=NetBLK2_7 Pin=BLK2-7
+Added Pin To Net: NetName=NetBLK2_7 Pin=R32-1
+Added Pin To Net: NetName=NetBLK2_7 Pin=U4-13
+Added Net: Name=NetBLK2_7
+Added Pin To Net: NetName=NetBLK2_8 Pin=BLK2-8
+Added Pin To Net: NetName=NetBLK2_8 Pin=R33-1
+Added Pin To Net: NetName=NetBLK2_8 Pin=U4-12
+Added Net: Name=NetBLK2_8
+Added Pin To Net: NetName=NetBLK2_9 Pin=BLK2-9
+Added Pin To Net: NetName=NetBLK2_9 Pin=R34-1
+Added Pin To Net: NetName=NetBLK2_9 Pin=U4-11
+Added Net: Name=NetBLK2_9
+Added Pin To Net: NetName=NetR1_2 Pin=R1-2
+Added Pin To Net: NetName=NetR1_2 Pin=SD1-1
+Added Net: Name=NetR1_2
+Added Pin To Net: NetName=NetR2_1 Pin=R2-1
+Added Pin To Net: NetName=NetR2_1 Pin=SD2-5
+Added Net: Name=NetR2_1
+Added Pin To Net: NetName=NetR3_2 Pin=R3-2
+Added Pin To Net: NetName=NetR3_2 Pin=SD1-2
+Added Net: Name=NetR3_2
+Added Pin To Net: NetName=NetR4_1 Pin=R4-1
+Added Pin To Net: NetName=NetR4_1 Pin=SD2-4
+Added Net: Name=NetR4_1
+Added Pin To Net: NetName=NetR5_2 Pin=R5-2
+Added Pin To Net: NetName=NetR5_2 Pin=SD1-4
+Added Net: Name=NetR5_2
+Added Pin To Net: NetName=NetR6_1 Pin=R6-1
+Added Pin To Net: NetName=NetR6_1 Pin=SD2-2
+Added Net: Name=NetR6_1
+Added Pin To Net: NetName=NetR7_2 Pin=R7-2
+Added Pin To Net: NetName=NetR7_2 Pin=SD1-5
+Added Net: Name=NetR7_2
+Added Pin To Net: NetName=NetR8_1 Pin=R8-1
+Added Pin To Net: NetName=NetR8_1 Pin=SD2-1
+Added Net: Name=NetR8_1
+Added Pin To Net: NetName=NetR21_2 Pin=R21-2
+Added Pin To Net: NetName=NetR21_2 Pin=SD1-6
+Added Net: Name=NetR21_2
+Added Pin To Net: NetName=NetR22_1 Pin=R22-1
+Added Pin To Net: NetName=NetR22_1 Pin=SD2-9
+Added Net: Name=NetR22_1
+Added Pin To Net: NetName=NetR23_2 Pin=R23-2
+Added Pin To Net: NetName=NetR23_2 Pin=SD1-9
+Added Net: Name=NetR23_2
+Added Pin To Net: NetName=NetR24_1 Pin=R24-1
+Added Pin To Net: NetName=NetR24_1 Pin=SD2-6
+Added Net: Name=NetR24_1
+Added Pin To Net: NetName=NetR25_2 Pin=R25-2
+Added Pin To Net: NetName=NetR25_2 Pin=SD1-7
+Added Net: Name=NetR25_2
+Added Pin To Net: NetName=NetR26_1 Pin=R26-1
+Added Pin To Net: NetName=NetR26_1 Pin=SD2-7
+Added Net: Name=NetR26_1
