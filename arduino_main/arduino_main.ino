@@ -180,7 +180,10 @@ void ReadFromBlocks() {
         mode = 0;
         op = 0;
         num2 = 0;
+        /*digitalWrite(Pin_Red_LED, HIGH);
         delay(1000);
+        digitalWrite(Pin_Red_LED, LOW);
+        delay(1000);*/
     }
 }
 
