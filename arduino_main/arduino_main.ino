@@ -17,25 +17,25 @@ const int Pin_CLK               =   4;  // Synchronous clock signal             
 
 // Pins for the block inputs
 // TODO: Check whether we can use a common enable line for the three blocks (that would be easier)
-const int Pin_Num1_Data          = 11;  // Block 1 PISO(165) register Qh pin                           // OK
-const int Pin_Op_Data            =  7;  // Operator block PISO(165) register Qh pin                    // OK
-const int Pin_Num2_Data          =  9;  // Block 2 PISO(165) register Qh pin                           // OK
+const int Pin_Num1_Data          = 11;  // Block 1 PISO(165)reg Qh' pin (Ard 11 -> 165 num1 pin 7)     // OK
+const int Pin_Op_Data            =  7;  // Operator block PISO(165)reg Qh' pin (Ard 7 -> 165 op pin 7) // OK
+const int Pin_Num2_Data          =  9;  // Block 2 PISO(165)reg Qh' pin (Ard 7 -> 165 num2 pin 7)      // OK
+const int Pin_Block_Shift_Load   = 12;  // Block PISO(165) register SH/LD pin (6): H: shift, L: load   // OK
+const int Pin_Block_CLK_Inhibit  = 17;  // Block PISO(165) register CLK INH pin (Ard A3 -> Pin 15)     // OK
 
 // Array of input data pins
 int Pin_Block_Array[3]           = {Pin_Num1_Data, Pin_Op_Data, Pin_Num2_Data};
 
 // Pins for the display unit
-const int Pin_Display_Enable     =  6;  // BCD-7S Decoder(48) BI/RBO pin - negative logic              // not used in prototype
-const int Pin_Block_Shift_Load   = 12;  // Display SIPO(595) register SH/LD pin: H: shift, L: load     // changed
-const int Pin_Block_CLK_Inhibit  = 17;  // Display SIPO(595) register CLK INH pin                      // changed
-const int Pin_Display_Data       =  5;  // Display SIPO(595) register SER pin
-const int Pin_Display_Reg_Enable =  8;  // Display SIPO(595) register OE  pin - negative logic
-const int Pin_Green_LED          = 15;  // Correct answer feedback LED pin
-const int Pin_Red_LED            = 16;  // Wrong answer feedback LED pin
-const int Pin_BarGraph_PWM       = 10;  // LED bar graph for score keeping                             // changed
+const int Pin_Display_Enable     =  6;  // BCD-7S Decoder(47) (Ard D6 -> BI/RBO' pin                   // not used in prototype
+const int Pin_Display_Data       =  5;  // Display SIPO(595) register SER pin (Ard D5 -> 595 pin 14)   // OK
+const int Pin_Display_Reg_Enable =  8;  // Display SIPO(595) register RCLK pin (Ard D8 -> 595 pin 12)  // OK
+const int Pin_Green_LED          = 15;  // Correct answer feedback LED pin (Ard A1 -> Green LED +)     // OK
+const int Pin_Red_LED            = 16;  // Wrong answer feedback LED pin (Ard A2 -> Red LED +)         // OK
+const int Pin_BarGraph_PWM       = 10;  // LED bar graph PWM output (Ard D10 -> LM3914 Filter input)   // not in prototype; but in PCB
 
 // Analog pins
-const int Pin_Battery_Level      = 14;  // Analog input pin for battery level                          // not used
+const int Pin_Battery_Level      = 14;  // Analog input pin for battery level                          // not used in prototype/PCB
 
 //Interrupt pins
 const int Pin_Next_Interrupt     =  2;  // Next button pin                                             // OK
@@ -66,8 +66,8 @@ int op        = 0;                      // User input operator
 int num2      = 0;                      // User input operand 2
 
 volatile int loop_flag = 0;             // Break out of blink loop after interrupt
-volatile int blocks_flag = 0;        // Check proper connection of input blocks
-
+volatile int blocks_flag = 0;           // Check proper connection of input blocks
+                                        // 1 if all three blocks are set; 0 otherwise
 
 int score     = 0;                      // Score accumulated by user
 int number    = 0;                      // Number to be made using num1, num2, and op 
@@ -166,7 +166,7 @@ void ReadFromBlocks() {
         digitalWrite(Pin_CLK, LOW); // Fall-edge CLK
     }
     // Interpret the read bit field and obtain the digits and the operator
-    if ((ByteField[0] >> 7) & 0b00000001 && (ByteField[1] >> 7) & 0b00000001 &&(ByteField[0] >> 7) & 0b00000001) {
+    if ((ByteField[0] >> 7) & 0b00000001 && (ByteField[1] >> 7) & 0b00000001 && (ByteField[0] >> 7) & 0b00000001) {
         blocks_flag = 1;
         num1 = ((ByteField[0] >> 4) & 0b00000111)*10 + (ByteField[0] & 0b00001111);
         mode = (ByteField[1] >> 4) & 0b00000111;
@@ -174,11 +174,13 @@ void ReadFromBlocks() {
         num2 = ((ByteField[2] >> 4) & 0b00000111)*10 + (ByteField[2] & 0b00001111);
     }
     else {
+        // "No block in at least one of the slots" state
         blocks_flag = 0;
         num1 = 0;
         mode = 0;
         op = 0;
         num2 = 0;
+        delay(1000);
     }
 }
 
