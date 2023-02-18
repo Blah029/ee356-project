@@ -13,33 +13,33 @@
 // ------------------------------------------------------------------------------------------------
 
 // Pin designations
-const int Pin_CLK               =   4;  // Synchronous clock signal
+const int Pin_CLK               =   4;  // Synchronous clock signal                                    // OK
 
 // Pins for the block inputs
 // TODO: Check whether we can use a common enable line for the three blocks (that would be easier)
-const int Pin_Num1_Data          = 11;  // Block 1 PISO(165) register Qh pin
-const int Pin_Op_Data            =  7;  // Operator block PISO(165) register Qh pin
-const int Pin_Num2_Data          =  9;  // Block 2 PISO(165) register Qh pin
+const int Pin_Num1_Data          = 11;  // Block 1 PISO(165) register Qh pin                           // OK
+const int Pin_Op_Data            =  7;  // Operator block PISO(165) register Qh pin                    // OK
+const int Pin_Num2_Data          =  9;  // Block 2 PISO(165) register Qh pin                           // OK
 
 // Array of input data pins
 int Pin_Block_Array[3]           = {Pin_Num1_Data, Pin_Op_Data, Pin_Num2_Data};
 
 // Pins for the display unit
-const int Pin_Display_Enable     =  6;  // BCD-7S Decoder(48) BI/RBO pin - negative logic
-const int Pin_Block_Shift_Load   = 12;  // Display SIPO(595) register SH/LD pin: H: shift, L: load
-const int Pin_Block_CLK_Inhibit  = 17;  // Display SIPO(595) register CLK INH pin
+const int Pin_Display_Enable     =  6;  // BCD-7S Decoder(48) BI/RBO pin - negative logic              // not used in prototype
+const int Pin_Block_Shift_Load   = 12;  // Display SIPO(595) register SH/LD pin: H: shift, L: load     // changed
+const int Pin_Block_CLK_Inhibit  = 17;  // Display SIPO(595) register CLK INH pin                      // changed
 const int Pin_Display_Data       =  5;  // Display SIPO(595) register SER pin
 const int Pin_Display_Reg_Enable =  8;  // Display SIPO(595) register OE  pin - negative logic
 const int Pin_Green_LED          = 15;  // Correct answer feedback LED pin
 const int Pin_Red_LED            = 16;  // Wrong answer feedback LED pin
-const int Pin_BarGraph_PWM       = 10;  // LED bar graph for score keeping
+const int Pin_BarGraph_PWM       = 10;  // LED bar graph for score keeping                             // changed
 
 // Analog pins
-const int Pin_Battery_Level      = 14;  // Analog input pin for battery level
+const int Pin_Battery_Level      = 14;  // Analog input pin for battery level                          // not used
 
 //Interrupt pins
-const int Pin_Next_Interrupt     =  2;  // Next button pin
-const int Pin_Submit_Interrupt   =  3;  // Submit button pin
+const int Pin_Next_Interrupt     =  2;  // Next button pin                                             // OK
+const int Pin_Submit_Interrupt   =  3;  // Submit button pin                                           // OK
 
 // ------------------------------------------------------------------------------------------------
 
