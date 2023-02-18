@@ -101,7 +101,8 @@ void NextButtonPress() {
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
     if (score == 10) {
-        // TODO: clear bar graph
+        analogWrite(Pin_BarGraph_PWM, 0);
+        // TODO: clear bar graph (DONE)
     }
     GenerateNumber();
 }
@@ -109,6 +110,15 @@ void NextButtonPress() {
 
 // To run when user submits an answer. TODO: implement the LED bar graph, fix debounce.
 void SubmitButtonPress() {
+    for (int p = 0; p <= 255; p++) {
+        analogWrite(Pin_BarGraph_PWM, p);
+        delay(10);
+    }
+    for (int p = 255; p >= 0; p--) {
+        analogWrite(Pin_BarGraph_PWM, p);
+        delay(10);
+    }
+    
     blocks_flag = 0;
     Serial.println(" ");
     Serial.println("Submit button interrupt occurred");
@@ -166,7 +176,7 @@ void ReadFromBlocks() {
         digitalWrite(Pin_CLK, LOW); // Fall-edge CLK
     }
     // Interpret the read bit field and obtain the digits and the operator
-    if ((ByteField[0] >> 7) & 0b00000001 && (ByteField[1] >> 7) & 0b00000001 && (ByteField[0] >> 7) & 0b00000001) {
+    if ((ByteField[0] >> 7) & 0b00000001 && (ByteField[1] >> 7) & 0b00000001 && (ByteField[2] >> 7) & 0b00000001) {
         blocks_flag = 1;
         num1 = ((ByteField[0] >> 4) & 0b00000111)*10 + (ByteField[0] & 0b00001111);
         mode = (ByteField[1] >> 4) & 0b00000111;
@@ -361,6 +371,7 @@ void setup() {
     pinMode(Pin_CLK,                OUTPUT); // Synchronous clock
     pinMode(Pin_Green_LED,          OUTPUT);
     pinMode(Pin_Red_LED,            OUTPUT);
+    pinMode(Pin_BarGraph_PWM,       OUTPUT);
 
     // Digital inputs
     pinMode(Pin_Num1_Data,          INPUT);  // Operand 1 serial in
