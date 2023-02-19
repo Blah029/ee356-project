@@ -3,3 +3,4 @@
 # proteus backup
 proteus_simulation/*
 !proteus_simulation/proteus_simulation.pdsprj
+altium_pcb/PCB_Project/History/*
