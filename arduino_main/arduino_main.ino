@@ -12,6 +12,10 @@
  */
 // ------------------------------------------------------------------------------------------------
 
+// #defines
+#define DEBUG true                      // Set to true for debug output, false for no debug output
+#define DEBUG_SERIAL if(DEBUG) Serial
+
 // Pin designations
 const int Pin_CLK                =  4;  // Synchronous clock signal
 
@@ -62,7 +66,7 @@ int ByteField[3] = {0, 0, 0};           // Bit field to store block data
                                         // i = 2: Num2 block
 
 // User inputs: variables for storage
-int num1                         = 0;   // User input operand1
+int num1                         = 0;   // User input operand 1
 int op                           = 0;   // User input operator
                                         // 0 - Addition, 1 - Subtraction, 2 - Mulitplication
 int num2                         = 0;   // User input operand 2
@@ -133,7 +137,7 @@ void Debounce(void (*function)()) {
         (*function)(); // run the function given in argument
         last_us = micros();
         
-        delay(1000); // Inhibit further bounces for this many ms
+        delay(500); // Inhibit further bounces for this many ms
 
         InterruptOccurred = false;
         //interrupts();
@@ -159,8 +163,8 @@ void ISRSubmitButtonPress() {
 void NextButtonPress() {
     loop_flag = 0; // Break the loop
     
-    Serial.println(" ");
-    Serial.println("Next button interrupt occurred");
+    DEBUG_SERIAL.println(" ");
+    DEBUG_SERIAL.println("Next button interrupt occurred");
 
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED,   LOW);
@@ -179,8 +183,8 @@ void NextButtonPress() {
 void SubmitButtonPress() {
     blocks_flag = 0; // Break the loop
 
-    Serial.println(" ");
-    Serial.println("Submit button interrupt occurred");
+    DEBUG_SERIAL.println(" ");
+    DEBUG_SERIAL.println("Submit button interrupt occurred");
 
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
@@ -210,7 +214,7 @@ void SubmitButtonPress() {
     }
     else {
         // Error: At least one block is not inserted
-        Serial.println("At least one block is not inserted");
+        DEBUG_SERIAL.println("At least one block is not inserted");
         BlinkLED(Pin_Red_LED, 500, 500, 1);
         BlinkLED(Pin_Green_LED, 500, 500, 1);
     }
@@ -219,14 +223,14 @@ void SubmitButtonPress() {
     for (int p = 0; p <= 255; p++) {
         analogWrite(Pin_BarGraph_PWM, p);
         delayMicroseconds(500000);
-        Serial.print(p);
-        Serial.println(micros());
+        DEBUG_SERIAL.print(p);
+        DEBUG_SERIAL.println(micros());
     }
     for (int p = 255; p >= 0; p--) {
         analogWrite(Pin_BarGraph_PWM, p);
         delayMicroseconds(500000);
-        Serial.print(p);
-        Serial.println(micros());
+        DEBUG_SERIAL.print(p);
+        DEBUG_SERIAL.println(micros());
     }
     */
 }
@@ -238,7 +242,7 @@ void SubmitButtonPress() {
 // Reads the parallel-in serial out registers (blocks)
 // into bit fields BlockNum1, BlockOp, BlockNum2.
 void ReadFromBlocks() {
-    Serial.println("Read from blocks");
+    DEBUG_SERIAL.println("Read from blocks");
 
     for (int i = 0; i < 3; i++) {
         // Write a pulse to (SH/LD) pin (load the data to register)
@@ -299,7 +303,7 @@ int ReadBatteryLevel() {
 
 // Select a random number from the list and display
 void GenerateNumber() {
-    Serial.println("Random number generated");
+    DEBUG_SERIAL.println("Random number generated");
 
     // Random number generator
     int rnd_num = random(40);
@@ -313,85 +317,85 @@ void GenerateNumber() {
     SendDigitsToDisplay(Pin_Display_Data, digit_10, digit_1);
     digitalWrite(Pin_Display_Enable, HIGH);
 
-    Serial.println(number);
+    DEBUG_SERIAL.println(number);
 }
 
 
 // Mode 0 - continuous problems, no score keeping. TODO: Implement bar graph
 void ModeFunction0() {
-    Serial.println("Mode 0");
+    DEBUG_SERIAL.println("Mode 0");
 
     int result = 0; // Result of input operation
 
     // Operation based on input
     if (op == 0) {
-        Serial.println("Mode 0 addition");
+        DEBUG_SERIAL.println("Mode 0 addition");
         result = num1 + num2;
     }
     else if (op == 1) {
-        Serial.println("Mode 0 subtraction");
+        DEBUG_SERIAL.println("Mode 0 subtraction");
         result = num1 - num2;
     }
     else if (op == 2) {
-        Serial.println("Mode 0 multiplication");
+        DEBUG_SERIAL.println("Mode 0 multiplication");
         result = num1 * num2;
     }
     // Comparison
     if (result == number) {
-        Serial.println("Mode 0 correct");
+        DEBUG_SERIAL.println("Mode 0 correct");
         BlinkLED(Pin_Green_LED, 125, 125, 3);
         digitalWrite(Pin_Green_LED, HIGH);
     }
     else {
-        Serial.println("Mode 0 incorrect");
+        DEBUG_SERIAL.println("Mode 0 incorrect");
         BlinkLED(Pin_Red_LED, 125, 125, 3);
         digitalWrite(Pin_Red_LED, HIGH);
     }
-    Serial.println(num1);
-    Serial.println(op);
-    Serial.println(num2);
-    Serial.println(result);
-    Serial.println(number);
+    DEBUG_SERIAL.println(num1);
+    DEBUG_SERIAL.println(op);
+    DEBUG_SERIAL.println(num2);
+    DEBUG_SERIAL.println(result);
+    DEBUG_SERIAL.println(number);
 }
 
 
 // Modes 1,2, and 3 - keep score and penalty
 void ModeFunction1to3() {
-    Serial.println("Mode 1to3");
+    DEBUG_SERIAL.println("Mode 1to3");
 
     int penalty = mode - 1; // Score reduction for incorrect answers
     int result = 0;         // Result of input operation
     // Operation based on input
     if (op == 0) {
-        Serial.println("Mode 1to3 addition");
+        DEBUG_SERIAL.println("Mode 1to3 addition");
         result = num1 + num2;
     }
     else if (op == 1) {
-        Serial.println("Mode 1to3 subtraction");
+        DEBUG_SERIAL.println("Mode 1to3 subtraction");
         result = num1 - num2;
     }
     else if (op == 2) {
-        Serial.println("Mode 1to3 multiplication");
+        DEBUG_SERIAL.println("Mode 1to3 multiplication");
         result = num1 * num2;
     }
     // Comparison
     if (result == number) {
-        Serial.println("Mode 1to3 correct");
+        DEBUG_SERIAL.println("Mode 1to3 correct");
         score++;
         BlinkLED(Pin_Green_LED, 125, 125, 3);
         digitalWrite(Pin_Green_LED, HIGH);
     }
     else {
-        Serial.println("Mode 1to3 incorrect");
+        DEBUG_SERIAL.println("Mode 1to3 incorrect");
         score = score - penalty;
         BlinkLED(Pin_Red_LED, 125, 125, 3);
         digitalWrite(Pin_Red_LED, HIGH);
     }
-    Serial.println(num1);
-    Serial.println(op);
-    Serial.println(num2);
-    Serial.println(result);
-    Serial.println(number);
+    DEBUG_SERIAL.println(num1);
+    DEBUG_SERIAL.println(op);
+    DEBUG_SERIAL.println(num2);
+    DEBUG_SERIAL.println(result);
+    DEBUG_SERIAL.println(number);
 }
 
 
@@ -419,10 +423,6 @@ void setup() {
     // Analog inputs
     pinMode(Pin_Battery_Level,      INPUT);  // Battery voltage
 
-    // Starting chime
-    BlinkLED(Pin_Green_LED, 125, 125, 1);
-    BlinkLED(Pin_Red_LED,   125, 125, 1);
-
     // Interrupt pins: push buttons
     pinMode(Pin_Next_Interrupt,     INPUT_PULLUP);
     pinMode(Pin_Submit_Interrupt,   INPUT_PULLUP);
@@ -431,12 +431,16 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt),   ISRNextButtonPress,   RISING);
     attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), ISRSubmitButtonPress, RISING);
 
+    // Starting chime
+    BlinkLED(Pin_Green_LED, 125, 125, 1);
+    BlinkLED(Pin_Red_LED,   125, 125, 1);
+
     // Pre-loop commands
     digitalWrite(Pin_Display_Enable, LOW);
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
 
-    Serial.begin(Serial_Baud_Rate); // Begin serial monitor
+    DEBUG_SERIAL.begin(Serial_Baud_Rate); // Begin serial monitor
     randomSeed(analogRead(Pin_Battery_Level));
     
     ReadFromBlocks();
