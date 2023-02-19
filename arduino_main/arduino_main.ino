@@ -13,33 +13,33 @@
 // ------------------------------------------------------------------------------------------------
 
 // Pin designations
-const int Pin_CLK               =   4;  // Synchronous clock signal                                    // OK
+const int Pin_CLK                =  4;  // Synchronous clock signal
 
 // Pins for the block inputs
 // TODO: Check whether we can use a common enable line for the three blocks (that would be easier)
-const int Pin_Num1_Data          = 11;  // Block 1 PISO(165)reg Qh' pin (Ard 11 -> 165 num1 pin 7)     // OK
-const int Pin_Op_Data            =  7;  // Operator block PISO(165)reg Qh' pin (Ard 7 -> 165 op pin 7) // OK
-const int Pin_Num2_Data          =  9;  // Block 2 PISO(165)reg Qh' pin (Ard 7 -> 165 num2 pin 7)      // OK
-const int Pin_Block_Shift_Load   = 12;  // Block PISO(165) register SH/LD pin (6): H: shift, L: load   // OK
-const int Pin_Block_CLK_Inhibit  = 17;  // Block PISO(165) register CLK INH pin (Ard A3 -> Pin 15)     // OK
+const int Pin_Num1_Data          = 11;  // Block 1 PISO(165)reg Qh' pin (Ard 11 -> 165 num1 pin 7)
+const int Pin_Op_Data            =  7;  // Operator block PISO(165)reg Qh' pin (Ard 7 -> 165 op pin 7)
+const int Pin_Num2_Data          =  9;  // Block 2 PISO(165)reg Qh' pin (Ard 7 -> 165 num2 pin 7)
+const int Pin_Block_Shift_Load   = 12;  // Block PISO(165) register SH/LD pin (6): H: shift, L: load
+const int Pin_Block_CLK_Inhibit  = 17;  // Block PISO(165) register CLK INH pin (Ard A3 -> Pin 15)
 
 // Array of input data pins
 int Pin_Block_Array[3]           = {Pin_Num1_Data, Pin_Op_Data, Pin_Num2_Data};
 
 // Pins for the display unit
-const int Pin_Display_Enable     =  6;  // BCD-7S Decoder(47) (Ard D6 -> BI/RBO' pin                   // not used in prototype
-const int Pin_Display_Data       =  5;  // Display SIPO(595) register SER pin (Ard D5 -> 595 pin 14)   // OK
-const int Pin_Display_Reg_Enable =  8;  // Display SIPO(595) register RCLK pin (Ard D8 -> 595 pin 12)  // OK
-const int Pin_Green_LED          = 15;  // Correct answer feedback LED pin (Ard A1 -> Green LED +)     // OK
-const int Pin_Red_LED            = 16;  // Wrong answer feedback LED pin (Ard A2 -> Red LED +)         // OK
-const int Pin_BarGraph_PWM       = 10;  // LED bar graph PWM output (Ard D10 -> LM3914 Filter input)   // not in prototype; but in PCB
+const int Pin_Display_Enable     =  6;  // BCD-7S Decoder(47) (Ard D6 -> BI/RBO' pin)                  // unused in prototype/PCB
+const int Pin_Display_Data       =  5;  // Display SIPO(595) register SER pin (Ard D5 -> 595 pin 14)
+const int Pin_Display_Reg_Enable =  8;  // Display SIPO(595) register RCLK pin (Ard D8 -> 595 pin 12)
+const int Pin_Green_LED          = 15;  // Correct answer feedback LED pin (Ard A1 -> Green LED +)
+const int Pin_Red_LED            = 16;  // Wrong answer feedback LED pin (Ard A2 -> Red LED +)
+const int Pin_BarGraph_PWM       = 10;  // LED bar graph PWM output (Ard D10 -> LM3914 Filter input)
 
 // Analog pins
-const int Pin_Battery_Level      = 14;  // Analog input pin for battery level                          // not used in prototype/PCB
+const int Pin_Battery_Level      = 14;  // Analog input pin for battery level                          // unused in prototype/PCB
 
 //Interrupt pins
-const int Pin_Next_Interrupt     =  2;  // Next button pin                                             // OK
-const int Pin_Submit_Interrupt   =  3;  // Submit button pin                                           // OK
+const int Pin_Next_Interrupt     =  2;  // Next button pin
+const int Pin_Submit_Interrupt   =  3;  // Submit button pin
 
 // ------------------------------------------------------------------------------------------------
 
@@ -49,6 +49,9 @@ const int Pin_Submit_Interrupt   =  3;  // Submit button pin                    
 int ValidNumberList[40] = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 
                             15, 16, 17, 18, 20, 21, 24, 25, 27, 28, 30, 32, 35, 36, 40, 
                             42, 45, 48, 49, 54, 56, 63, 64, 72, 81};
+
+int Serial_Baud_Rate             = 9600;// Serial baud rate (bps)
+long debouncing_time             = 100; // Debouncing time (in ms) for push buttons
 
 // ------------------------------------------------------------------------------------------------
 
@@ -68,10 +71,14 @@ int mode      = 0;                      // User input mode select
 int score     = 0;                      // Score accumulated by user
 int number    = 0;                      // Number to be made using num1, num2, and op
 
+// Debouncing
+volatile unsigned long last_ms;         // Last timestamp (in ms) of a button press
+
 // Flags for program flow
 volatile int loop_flag = 0;             // Break out of blink loop after interrupt
 volatile int blocks_flag = 0;           // Check proper connection of input blocks
                                         // 1 if all three blocks are set; 0 otherwise
+
 
 // ------------------------------------------------------------------------------------------------
 
@@ -93,6 +100,28 @@ void DisplayTest03();
 // ------------------------------------------------------------------------------------------------
 
 // Interrupt service routines (ISRs).
+
+// A wrapper function for push button debouncing 
+void Debounce(void (*)());
+void Debounce(void (*function)()) {
+    if ((long) (millis() - last_ms) >= debouncing_time) {
+        (*function)(); // run the function given in argument
+        last_ms = millis();
+    }
+}
+
+
+// ISR for Next button press
+void ISRNextButtonPress() {
+    Debounce(NextButtonPress);
+}
+
+
+// ISR for Submit button press
+void ISRSubmitButtonPress() {
+    Debounce(SubmitButtonPress);
+}
+
 
 // To run when user presses next. TODO: implement the LED bar graph, fix debounce.
 void NextButtonPress() {
@@ -143,10 +172,12 @@ void SubmitButtonPress() {
     }
     else {
         // Error: At least one block is not inserted
-        digitalWrite(Pin_Red_LED, HIGH);
-        delay(250);
-        digitalWrite(Pin_Red_LED, LOW);
-        delay(250);
+        for (int p = 0; p <= 3; p++) {
+            digitalWrite(Pin_Red_LED, HIGH);
+            delay(250);
+            digitalWrite(Pin_Red_LED, LOW);
+            delay(250);
+        }
     }
 }
 
@@ -173,7 +204,12 @@ void ReadFromBlocks() {
         digitalWrite(Pin_CLK, LOW); // Fall-edge CLK
     }
     // Interpret the read bit field and obtain the digits and the operator
-    if ((ByteField[0] >> 7) & 0b00000001 && (ByteField[1] >> 7) & 0b00000001 && (ByteField[2] >> 7) & 0b00000001) {
+    // if: check whether the MSB of each block is HIGH (i.e. block inserted)
+    if (
+        ((ByteField[0] >> 7) & 0b00000001) && 
+        ((ByteField[1] >> 7) & 0b00000001) && 
+        ((ByteField[2] >> 7) & 0b00000001)
+        ) {
         blocks_flag = 1;
         num1 = ((ByteField[0] >> 4) & 0b00000111)*10 + (ByteField[0] & 0b00001111);
         mode = (ByteField[1] >> 4) & 0b00000111;
@@ -331,8 +367,8 @@ void setup() {
     pinMode(Pin_Submit_Interrupt,   INPUT_PULLUP);
 
     // Set up interrupts
-    attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt),   NextButtonPress,   RISING);
-    attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), SubmitButtonPress, RISING);
+    attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt),   ISRNextButtonPress,   RISING);
+    attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), ISRSubmitButtonPress, RISING);
 
     // Pre-loop commands
     GenerateNumber();
@@ -340,7 +376,7 @@ void setup() {
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
 
-    Serial.begin(9600); // Begin serial monitor at baud rate 9600
+    Serial.begin(Serial_Baud_Rate); // Begin serial monitor
     randomSeed(analogRead(Pin_Battery_Level));
 }
 
