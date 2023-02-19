@@ -2,19 +2,18 @@
 FileName = PCB_Blocks.GBR
 AutoAperture = True
 *************************************************************
-Generating : Bottom Solder
-      File : PCB_Blocks.GBS
+Generating : Top Layer
+      File : PCB_Blocks.GTL
 
-    Adding Layer      : Bottom Solder
-
-    Adding Layer      : Bottom Layer
+    Adding Layer      : Top Layer
 
     Adding Layer      : Multi-Layer
 
 
 Used DCodes :
-    D11
-    D12
+    D13
+    D14
+    D15
 *************************************************************
 
 *************************************************************
@@ -32,28 +31,30 @@ Used DCodes :
 *************************************************************
 
 *************************************************************
-Generating : Top Layer
-      File : PCB_Blocks.GTL
+Generating : Top Overlay
+      File : PCB_Blocks.GTO
 
-    Adding Layer      : Top Layer
+    Adding Layer      : Top Overlay
+
+
+Used DCodes :
+    D10
+*************************************************************
+
+*************************************************************
+Generating : Bottom Solder
+      File : PCB_Blocks.GBS
+
+    Adding Layer      : Bottom Solder
+
+    Adding Layer      : Bottom Layer
 
     Adding Layer      : Multi-Layer
 
 
 Used DCodes :
-    D13
-    D14
-    D15
-*************************************************************
-
-*************************************************************
-Generating : Bottom Overlay
-      File : PCB_Blocks.GBO
-
-    Adding Layer      : Bottom Overlay
-
-
-Used DCodes :
+    D11
+    D12
 *************************************************************
 
 *************************************************************
@@ -71,19 +72,13 @@ Used DCodes :
 *************************************************************
 
 *************************************************************
-Generating : Top Solder
-      File : PCB_Blocks.GTS
+Generating : Bottom Overlay
+      File : PCB_Blocks.GBO
 
-    Adding Layer      : Top Solder
-
-    Adding Layer      : Top Layer
-
-    Adding Layer      : Multi-Layer
+    Adding Layer      : Bottom Overlay
 
 
 Used DCodes :
-    D11
-    D12
 *************************************************************
 
 *************************************************************
@@ -101,13 +96,18 @@ Used DCodes :
 *************************************************************
 
 *************************************************************
-Generating : Top Overlay
-      File : PCB_Blocks.GTO
+Generating : Top Solder
+      File : PCB_Blocks.GTS
 
-    Adding Layer      : Top Overlay
+    Adding Layer      : Top Solder
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
 
 
 Used DCodes :
-    D10
+    D11
+    D12
 *************************************************************
 
