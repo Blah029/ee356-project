@@ -72,7 +72,7 @@ int score     = 0;                      // Score accumulated by user
 int number    = 0;                      // Number to be made using num1, num2, and op
 
 // Debouncing
-volatile unsigned long last_ms;         // Last timestamp (in ms) of a button press
+volatile unsigned long last_ms = 0;     // Last timestamp (in ms) of a button press
 
 // Flags for program flow
 volatile int loop_flag = 0;             // Break out of blink loop after interrupt
@@ -102,24 +102,31 @@ void DisplayTest03();
 // Interrupt service routines (ISRs).
 
 // A wrapper function for push button debouncing 
+volatile bool InterruptOccurred = false;
+
 void Debounce(void (*)());
 void Debounce(void (*function)()) {
     if ((long) (millis() - last_ms) >= debouncing_time) {
+        InterruptOccurred = true;
         (*function)(); // run the function given in argument
         last_ms = millis();
+        delay(1000); // Ignore multiple bounces for this many ms
+        InterruptOccurred = false;
     }
 }
 
 
 // ISR for Next button press
 void ISRNextButtonPress() {
-    Debounce(NextButtonPress);
+    if (!InterruptOccurred)
+        Debounce(NextButtonPress);
 }
 
 
 // ISR for Submit button press
 void ISRSubmitButtonPress() {
-    Debounce(SubmitButtonPress);
+    if (!InterruptOccurred)
+        Debounce(SubmitButtonPress);
 }
 
 
@@ -138,6 +145,8 @@ void NextButtonPress() {
 
     // Generate a random number and send it to the display
     GenerateNumber();
+
+    delay(1000);
 }
 
 
@@ -172,12 +181,10 @@ void SubmitButtonPress() {
     }
     else {
         // Error: At least one block is not inserted
-        for (int p = 0; p <= 3; p++) {
-            digitalWrite(Pin_Red_LED, HIGH);
-            delay(250);
-            digitalWrite(Pin_Red_LED, LOW);
-            delay(250);
-        }
+        digitalWrite(Pin_Red_LED, HIGH);
+        delay(250);
+        digitalWrite(Pin_Red_LED, LOW);
+        delay(250);
     }
 }
 
@@ -371,13 +378,14 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), ISRSubmitButtonPress, RISING);
 
     // Pre-loop commands
-    GenerateNumber();
     digitalWrite(Pin_Display_Enable, LOW);
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
 
     Serial.begin(Serial_Baud_Rate); // Begin serial monitor
     randomSeed(analogRead(Pin_Battery_Level));
+    GenerateNumber();
+    ReadFromBlocks();
 }
 
 
