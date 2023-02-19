@@ -5,3 +5,4 @@ proteus_simulation/*
 !proteus_simulation/proteus_simulation.pdsprj
 # Altium history folder
 altium_pcb/PCB_Project/History/*
+altium_pcb/PCB_Blocks/History/*
