@@ -58,19 +58,20 @@ int ByteField[3] = {0, 0, 0};           // Bit field to store block data
                                         // i = 1: Operator block
                                         // i = 2: Num2 block
 
-// User inputs: variables
+// User inputs: variables for storage
 int num1      = 0;                      // User input operand1
-int mode      = 0;                      // User input mode select
 int op        = 0;                      // User input operator
                                         // 0 - Addition, 1 - Subtraction, 2 - Mulitplication
 int num2      = 0;                      // User input operand 2
+int mode      = 0;                      // User input mode select
 
+int score     = 0;                      // Score accumulated by user
+int number    = 0;                      // Number to be made using num1, num2, and op
+
+// Flags for program flow
 volatile int loop_flag = 0;             // Break out of blink loop after interrupt
 volatile int blocks_flag = 0;           // Check proper connection of input blocks
                                         // 1 if all three blocks are set; 0 otherwise
-
-int score     = 0;                      // Score accumulated by user
-int number    = 0;                      // Number to be made using num1, num2, and op 
 
 // ------------------------------------------------------------------------------------------------
 
@@ -95,37 +96,32 @@ void DisplayTest03();
 
 // To run when user presses next. TODO: implement the LED bar graph, fix debounce.
 void NextButtonPress() {
-    loop_flag = 0;
+    loop_flag = 0; // Break the loop
     Serial.println(" ");
     Serial.println("Next button interrupt occurred");
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
+
     if (score == 10) {
         analogWrite(Pin_BarGraph_PWM, 0);
         // TODO: clear bar graph (DONE)
     }
+
+    // Generate a random number and send it to the display
     GenerateNumber();
 }
 
 
 // To run when user submits an answer. TODO: implement the LED bar graph, fix debounce.
 void SubmitButtonPress() {
-    for (int p = 0; p <= 255; p++) {
-        analogWrite(Pin_BarGraph_PWM, p);
-        delay(10);
-    }
-    for (int p = 255; p >= 0; p--) {
-        analogWrite(Pin_BarGraph_PWM, p);
-        delay(10);
-    }
-    
-    blocks_flag = 0;
+    blocks_flag = 0; // Break the loop
     Serial.println(" ");
     Serial.println("Submit button interrupt occurred");
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
     ReadFromBlocks();
-    if (blocks_flag == 1) {
+
+    if (blocks_flag == 1) { // Check if all three blocks are inserted
         if (mode == 0) {
             ModeFunction0();
         }
@@ -146,6 +142,7 @@ void SubmitButtonPress() {
         }
     }
     else {
+        // Error: At least one block is not inserted
         digitalWrite(Pin_Red_LED, HIGH);
         delay(250);
         digitalWrite(Pin_Red_LED, LOW);
@@ -184,16 +181,12 @@ void ReadFromBlocks() {
         num2 = ((ByteField[2] >> 4) & 0b00000111)*10 + (ByteField[2] & 0b00001111);
     }
     else {
-        // "No block in at least one of the slots" state
+        // At least one block is not inserted
         blocks_flag = 0;
         num1 = 0;
         mode = 0;
         op = 0;
         num2 = 0;
-        /*digitalWrite(Pin_Red_LED, HIGH);
-        delay(1000);
-        digitalWrite(Pin_Red_LED, LOW);
-        delay(1000);*/
     }
 }
 
@@ -220,12 +213,17 @@ void GenerateNumber() {
     Serial.println("Random number generated");
 
     // Random number generator
-    number = ValidNumberList[random(40)];
+    int rnd_num = random(40);
+    number = ValidNumberList[rnd_num];
 
     // Display the generated number
+    int digit_10 = (int) (number/10);
+    int digit_1 = number % 10;
+
     digitalWrite(Pin_Display_Enable, LOW);
-    SendDigitsToDisplay(Pin_Display_Data, (int)number/10, number%10);
+    SendDigitsToDisplay(Pin_Display_Data, digit_10, digit_1);
     digitalWrite(Pin_Display_Enable, HIGH);
+
     Serial.println(number);
 }
 
@@ -235,6 +233,7 @@ void ModeFunction0() {
     Serial.println("Mode 0");
 
     int result = 0; // Result of input operation
+
     // Operation based on input
     if (op == 0) {
         Serial.println("Mode 0 addition");
@@ -302,6 +301,77 @@ void ModeFunction1to3() {
     Serial.println(number);
 }
 
+
+// Setup
+void setup() {
+    // I/O pin setup
+
+    // Digital outputs
+    pinMode(Pin_Block_Shift_Load,   OUTPUT);
+    pinMode(Pin_Block_CLK_Inhibit,  OUTPUT); 
+
+    pinMode(Pin_Display_Enable,     OUTPUT); // Display  enable
+    pinMode(Pin_Display_Reg_Enable, OUTPUT); // Display reg enable
+    pinMode(Pin_Display_Data,       OUTPUT); // Display serial out
+    pinMode(Pin_CLK,                OUTPUT); // Synchronous clock
+    pinMode(Pin_Green_LED,          OUTPUT);
+    pinMode(Pin_Red_LED,            OUTPUT);
+    pinMode(Pin_BarGraph_PWM,       OUTPUT);
+
+    // Digital inputs
+    pinMode(Pin_Num1_Data,          INPUT);  // Operand 1 serial in
+    pinMode(Pin_Num2_Data,          INPUT);  // Operand 2 serial in
+    pinMode(Pin_Op_Data,            INPUT);  // Operator  serial in
+
+    // Analog inputs
+    pinMode(Pin_Battery_Level,      INPUT);  // Battery voltage
+
+    // Interrupt pins: push buttons
+    pinMode(Pin_Next_Interrupt,     INPUT_PULLUP);
+    pinMode(Pin_Submit_Interrupt,   INPUT_PULLUP);
+
+    // Set up interrupts
+    attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt),   NextButtonPress,   RISING);
+    attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), SubmitButtonPress, RISING);
+
+    // Pre-loop commands
+    GenerateNumber();
+    digitalWrite(Pin_Display_Enable, LOW);
+    digitalWrite(Pin_Green_LED, LOW);
+    digitalWrite(Pin_Red_LED, LOW);
+
+    Serial.begin(9600); // Begin serial monitor at baud rate 9600
+    randomSeed(analogRead(Pin_Battery_Level));
+}
+
+
+// Main loop
+void loop() {
+    // Empty
+    // Interrupt-based program
+}
+// ------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ------------------------------------------------------------------------------------------------
 
 // Test functions
@@ -355,53 +425,4 @@ void DisplayTest03() {
     SendDigitsToDisplay(Pin_Display_Data, 3,3);
 }
 
-// ------------------------------------------------------------------------------------------------
-
-// Setup
-void setup() {
-    // I/O pin setup
-
-    // Digital outputs
-    pinMode(Pin_Block_Shift_Load,   OUTPUT);
-    pinMode(Pin_Block_CLK_Inhibit,  OUTPUT); 
-
-    pinMode(Pin_Display_Enable,     OUTPUT); // Display  enable
-    pinMode(Pin_Display_Reg_Enable, OUTPUT); // Display reg enable
-    pinMode(Pin_Display_Data,       OUTPUT); // Display serial out
-    pinMode(Pin_CLK,                OUTPUT); // Synchronous clock
-    pinMode(Pin_Green_LED,          OUTPUT);
-    pinMode(Pin_Red_LED,            OUTPUT);
-    pinMode(Pin_BarGraph_PWM,       OUTPUT);
-
-    // Digital inputs
-    pinMode(Pin_Num1_Data,          INPUT);  // Operand 1 serial in
-    pinMode(Pin_Num2_Data,          INPUT);  // Operand 2 serial in
-    pinMode(Pin_Op_Data,            INPUT);  // Operator  serial in
-
-    // Analog inputs
-    pinMode(Pin_Battery_Level,      INPUT);  // Battery voltage
-
-    // Interrupt pins: push buttons
-    pinMode(Pin_Next_Interrupt,     INPUT_PULLUP);
-    pinMode(Pin_Submit_Interrupt,   INPUT_PULLUP);
-
-    // Set up interrupts
-    attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt),   NextButtonPress,   RISING);
-    attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), SubmitButtonPress, RISING);
-
-    // Pre-loop commands
-    GenerateNumber();
-    digitalWrite(Pin_Display_Enable, LOW);
-    digitalWrite(Pin_Green_LED, LOW);
-    digitalWrite(Pin_Red_LED, LOW);
-
-    Serial.begin(9600); // Begin serial monitor at baud rate 9600
-    randomSeed(analogRead(Pin_Battery_Level));
-}
-
-// Main loop
-void loop() {
-    // Empty
-    // Interrupt-based program
-}
 // ------------------------------------------------------------------------------------------------
