@@ -50,8 +50,8 @@ int ValidNumberList[40] = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 
                             15, 16, 17, 18, 20, 21, 24, 25, 27, 28, 30, 32, 35, 36, 40, 
                             42, 45, 48, 49, 54, 56, 63, 64, 72, 81};
 
-int Serial_Baud_Rate             = 9600;// Serial baud rate (bps)
-long debouncing_time             = 100; // Debouncing time (in ms) for push buttons
+int Serial_Baud_Rate             = 9600;   // Serial baud rate (bps)
+long debouncing_time             = 100000; // Debouncing time (in us) for push buttons
 
 // ------------------------------------------------------------------------------------------------
 
@@ -62,21 +62,21 @@ int ByteField[3] = {0, 0, 0};           // Bit field to store block data
                                         // i = 2: Num2 block
 
 // User inputs: variables for storage
-int num1      = 0;                      // User input operand1
-int op        = 0;                      // User input operator
+int num1                         = 0;   // User input operand1
+int op                           = 0;   // User input operator
                                         // 0 - Addition, 1 - Subtraction, 2 - Mulitplication
-int num2      = 0;                      // User input operand 2
-int mode      = 0;                      // User input mode select
+int num2                         = 0;   // User input operand 2
+int mode                         = 0;   // User input mode select
 
-int score     = 0;                      // Score accumulated by user
-int number    = 0;                      // Number to be made using num1, num2, and op
+int score                        = 0;   // Score accumulated by user
+int number                       = 0;   // Number to be made using num1, num2, and op
 
 // Debouncing
-volatile unsigned long last_ms = 0;     // Last timestamp (in ms) of a button press
+volatile unsigned long last_us   = 0;   // Last timestamp (in us) of a button press
 
 // Flags for program flow
-volatile int loop_flag = 0;             // Break out of blink loop after interrupt
-volatile int blocks_flag = 0;           // Check proper connection of input blocks
+volatile int loop_flag           = 0;   // Break out of blink loop after interrupt
+volatile int blocks_flag         = 0;   // Check proper connection of input blocks
                                         // 1 if all three blocks are set; 0 otherwise
 
 
@@ -92,6 +92,7 @@ int  ReadBatteryLevel();
 void GenerateNumber();
 void ModeFunction0();
 void ModeFunction1to3();
+void BlinkLED(int LED_pin, int On_duration, int Off_duration, int Blink_count);
 
 void DisplayTest01();
 void DisplayTest02();
@@ -99,19 +100,43 @@ void DisplayTest03();
 
 // ------------------------------------------------------------------------------------------------
 
+// Generic functions
+
+void BlinkLED(int LED_pin, int On_duration, int Off_duration, int Blink_count) {
+    for (int p = 1; p <= Blink_count; p++) {
+        digitalWrite(LED_pin, HIGH);
+        delay(On_duration);
+        digitalWrite(LED_pin, LOW);
+        delay(Off_duration);
+    }
+}
+
+// ------------------------------------------------------------------------------------------------
+
 // Interrupt service routines (ISRs).
 
-// A wrapper function for push button debouncing 
-volatile bool InterruptOccurred = false;
+// Interrupt flags
+volatile bool InterruptOccurred       = false;
+volatile bool NextButtonISROccurred   = false;
+volatile bool SubmitButtonISROccurred = false;
 
+// A wrapper function for push button debouncing 
 void Debounce(void (*)());
 void Debounce(void (*function)()) {
-    if ((long) (millis() - last_ms) >= debouncing_time) {
+    if ((long) (micros() - last_us) >= debouncing_time) {
         InterruptOccurred = true;
+        //noInterrupts();
+
+        NextButtonISROccurred   = false;
+        SubmitButtonISROccurred = false;
+        
         (*function)(); // run the function given in argument
-        last_ms = millis();
-        delay(1000); // Ignore multiple bounces for this many ms
+        last_us = micros();
+        
+        delay(1000); // Inhibit further bounces for this many ms
+
         InterruptOccurred = false;
+        //interrupts();
     }
 }
 
@@ -119,42 +144,44 @@ void Debounce(void (*function)()) {
 // ISR for Next button press
 void ISRNextButtonPress() {
     if (!InterruptOccurred)
-        Debounce(NextButtonPress);
+        NextButtonISROccurred   = true;
 }
 
 
 // ISR for Submit button press
 void ISRSubmitButtonPress() {
     if (!InterruptOccurred)
-        Debounce(SubmitButtonPress);
+        SubmitButtonISROccurred = true;
 }
 
 
-// To run when user presses next. TODO: implement the LED bar graph, fix debounce.
+// To run when user presses next. TODO: implement the LED bar graph
 void NextButtonPress() {
     loop_flag = 0; // Break the loop
+    
     Serial.println(" ");
     Serial.println("Next button interrupt occurred");
+
     digitalWrite(Pin_Green_LED, LOW);
-    digitalWrite(Pin_Red_LED, LOW);
+    digitalWrite(Pin_Red_LED,   LOW);
 
     if (score == 10) {
         analogWrite(Pin_BarGraph_PWM, 0);
-        // TODO: clear bar graph (DONE)
+        // TODO: clear bar graph
     }
 
     // Generate a random number and send it to the display
     GenerateNumber();
-
-    delay(1000);
 }
 
 
 // To run when user submits an answer. TODO: implement the LED bar graph, fix debounce.
 void SubmitButtonPress() {
     blocks_flag = 0; // Break the loop
+
     Serial.println(" ");
     Serial.println("Submit button interrupt occurred");
+
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
     ReadFromBlocks();
@@ -163,29 +190,45 @@ void SubmitButtonPress() {
         if (mode == 0) {
             ModeFunction0();
         }
-        if (mode > 0 && mode <= 3) {
+        else if (mode > 0 && mode <= 3) {
             ModeFunction1to3();
         }
         // TODO: update the bar graph
         if (score == 10) {
             loop_flag = 1;
             while (loop_flag) {
-                digitalWrite(Pin_Green_LED, HIGH);
+                BlinkLED(Pin_Green_LED, 250, 250, 1);
                 // TODO: Turn on all bar graph LEDs
-                delay(250);
-                digitalWrite(Pin_Green_LED, LOW);
                 // TODO: Turn off all bar graph LEDs
-                delay(250);
+                
+                //digitalWrite(Pin_Green_LED, HIGH);
+                //delay(250);
+                //digitalWrite(Pin_Green_LED, LOW);
+                //delay(250);
             }
         }
     }
     else {
         // Error: At least one block is not inserted
-        digitalWrite(Pin_Red_LED, HIGH);
-        delay(250);
-        digitalWrite(Pin_Red_LED, LOW);
-        delay(250);
+        Serial.println("At least one block is not inserted");
+        BlinkLED(Pin_Red_LED, 500, 500, 1);
+        BlinkLED(Pin_Green_LED, 500, 500, 1);
     }
+
+    /*
+    for (int p = 0; p <= 255; p++) {
+        analogWrite(Pin_BarGraph_PWM, p);
+        delayMicroseconds(500000);
+        Serial.print(p);
+        Serial.println(micros());
+    }
+    for (int p = 255; p >= 0; p--) {
+        analogWrite(Pin_BarGraph_PWM, p);
+        delayMicroseconds(500000);
+        Serial.print(p);
+        Serial.println(micros());
+    }
+    */
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -237,8 +280,11 @@ void ReadFromBlocks() {
 // Output a two digit number and convert 8-bit serial to parallel
 // Send two digits to the display
 void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1) {
+    int send_data = (digit_10 << 4) + digit_1;
+    send_data = ((digit_10 >= 0 && digit_10 <= 9) && (digit_1 >= 0 && digit_1 <= 9)) ? send_data : 0;
+
     digitalWrite(Pin_Display_Reg_Enable, LOW);
-    shiftOut(data_pin, Pin_CLK, MSBFIRST, (digit_10 << 4) + digit_1);
+    shiftOut(data_pin, Pin_CLK, MSBFIRST, send_data);
     digitalWrite(Pin_Display_Reg_Enable, HIGH);
 }
 
@@ -260,8 +306,8 @@ void GenerateNumber() {
     number = ValidNumberList[rnd_num];
 
     // Display the generated number
-    int digit_10 = (int) (number/10);
-    int digit_1 = number % 10;
+    int digit_10 = (int) (number / 10);
+    int digit_1  = (int) (number % 10);
 
     digitalWrite(Pin_Display_Enable, LOW);
     SendDigitsToDisplay(Pin_Display_Data, digit_10, digit_1);
@@ -293,10 +339,12 @@ void ModeFunction0() {
     // Comparison
     if (result == number) {
         Serial.println("Mode 0 correct");
+        BlinkLED(Pin_Green_LED, 125, 125, 3);
         digitalWrite(Pin_Green_LED, HIGH);
     }
     else {
         Serial.println("Mode 0 incorrect");
+        BlinkLED(Pin_Red_LED, 125, 125, 3);
         digitalWrite(Pin_Red_LED, HIGH);
     }
     Serial.println(num1);
@@ -330,11 +378,13 @@ void ModeFunction1to3() {
     if (result == number) {
         Serial.println("Mode 1to3 correct");
         score++;
+        BlinkLED(Pin_Green_LED, 125, 125, 3);
         digitalWrite(Pin_Green_LED, HIGH);
     }
     else {
         Serial.println("Mode 1to3 incorrect");
         score = score - penalty;
+        BlinkLED(Pin_Red_LED, 125, 125, 3);
         digitalWrite(Pin_Red_LED, HIGH);
     }
     Serial.println(num1);
@@ -369,6 +419,10 @@ void setup() {
     // Analog inputs
     pinMode(Pin_Battery_Level,      INPUT);  // Battery voltage
 
+    // Starting chime
+    BlinkLED(Pin_Green_LED, 125, 125, 1);
+    BlinkLED(Pin_Red_LED,   125, 125, 1);
+
     // Interrupt pins: push buttons
     pinMode(Pin_Next_Interrupt,     INPUT_PULLUP);
     pinMode(Pin_Submit_Interrupt,   INPUT_PULLUP);
@@ -384,15 +438,20 @@ void setup() {
 
     Serial.begin(Serial_Baud_Rate); // Begin serial monitor
     randomSeed(analogRead(Pin_Battery_Level));
-    GenerateNumber();
+    
     ReadFromBlocks();
+    //NextButtonPress();
+    GenerateNumber();
 }
 
 
 // Main loop
 void loop() {
-    // Empty
-    // Interrupt-based program
+    // Process interrupt flags
+    if (NextButtonISROccurred)
+        Debounce(NextButtonPress);
+    else if (SubmitButtonISROccurred)
+        Debounce(SubmitButtonPress);
 }
 // ------------------------------------------------------------------------------------------------
 
@@ -422,6 +481,7 @@ void loop() {
 
 // Test shift registers and seven segment display
 // Example code for serial communication for the 7SSDs
+/*
 void DisplayTest01() {
     SendDigitsToDisplay(Pin_Display_Data, 0, 0);
     digitalWrite(Pin_Display_Enable, HIGH);
@@ -435,8 +495,9 @@ void DisplayTest01() {
     digitalWrite(Pin_Display_Enable, LOW);
     delay(1000);
 }
-
+*/
 // Display input block values on SSD
+/*
 void DisplayTest02 () {
     
     // TODO: do this reading part when an interrupt occurs
@@ -463,10 +524,12 @@ void DisplayTest02 () {
     digitalWrite(Pin_Display_Enable, LOW);
     delay(1000);
 }
-
+*/
+/*
 // Send two predefined digits to the display
 void DisplayTest03() {
     SendDigitsToDisplay(Pin_Display_Data, 3,3);
 }
-
+*/
 // ------------------------------------------------------------------------------------------------
+
