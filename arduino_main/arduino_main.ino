@@ -409,7 +409,7 @@ void ModeFunction1to3() {
 
 // Setup
 void setup() {
-    // I/O pin setup
+    // I/O pin setup ------------------------------------------------------------------------------
 
     // Digital outputs
     pinMode(Pin_Block_Shift_Load,   OUTPUT);
@@ -439,20 +439,29 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(Pin_Next_Interrupt),   ISRNextButtonPress,   RISING);
     attachInterrupt(digitalPinToInterrupt(Pin_Submit_Interrupt), ISRSubmitButtonPress, RISING);
 
+    // --------------------------------------------------------------------------------------------
+
+    // Initial executions -------------------------------------------------------------------------
+    
+    // Begin serial monitor only if DEBUG flag is set
+    DEBUG_SERIAL.begin(Serial_Baud_Rate);
+
+    // Set random seed for the random number generator
+    randomSeed(analogRead(Pin_Battery_Level));
+
     // Starting chime
     BlinkLED(Pin_Green_LED, 125, 125, 1);
     BlinkLED(Pin_Red_LED,   125, 125, 1);
 
-    // Pre-loop commands
+    // Set initial states of the digital pins
     digitalWrite(Pin_Display_Enable, LOW);
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
 
-    DEBUG_SERIAL.begin(Serial_Baud_Rate); // Begin serial monitor
-    randomSeed(analogRead(Pin_Battery_Level));
-    
     ReadFromBlocks();
     GenerateNumber();
+
+    // --------------------------------------------------------------------------------------------
 }
 
 
