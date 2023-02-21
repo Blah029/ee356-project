@@ -90,6 +90,7 @@ volatile int blocks_flag         = 0;   // Check proper connection of input bloc
 void NextButtonPress();
 void SubmitButtonPress();
 
+bool CheckBlockConectivity();
 void ReadFromBlocks();
 void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1);
 int  ReadBatteryLevel();
@@ -239,6 +240,15 @@ void SubmitButtonPress() {
 
 // Main functions
 
+
+// Check if all three blocks are connected
+bool CheckBlockConectivity() {
+    return (((ByteField[0] >> 7) & 0b00000001) && 
+            ((ByteField[1] >> 7) & 0b00000001) && 
+            ((ByteField[2] >> 7) & 0b00000001));
+}
+
+
 // Reads the parallel-in serial out registers (blocks)
 // into bit fields BlockNum1, BlockOp, BlockNum2.
 void ReadFromBlocks() {
@@ -257,17 +267,14 @@ void ReadFromBlocks() {
         digitalWrite(Pin_Block_CLK_Inhibit, HIGH);
         digitalWrite(Pin_CLK, LOW); // Fall-edge CLK
     }
+
     // Interpret the read bit field and obtain the digits and the operator
     // if: check whether the MSB of each block is HIGH (i.e. block inserted)
-    if (
-        ((ByteField[0] >> 7) & 0b00000001) && 
-        ((ByteField[1] >> 7) & 0b00000001) && 
-        ((ByteField[2] >> 7) & 0b00000001)
-        ) {
+    if (CheckBlockConectivity()) {
         blocks_flag = 1;
         num1 = ((ByteField[0] >> 4) & 0b00000111)*10 + (ByteField[0] & 0b00001111);
-        mode = (ByteField[1] >> 4) & 0b00000111;
-        op = ByteField[1] & 0b00001111;
+        mode = ( ByteField[1] >> 4) & 0b00000111; // first 4 MSBs except the MSB
+        op   =                                          ByteField[1] & 0b00001111;
         num2 = ((ByteField[2] >> 4) & 0b00000111)*10 + (ByteField[2] & 0b00001111);
     }
     else {
