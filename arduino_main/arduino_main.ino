@@ -54,8 +54,8 @@ int ValidNumberList[40] = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 
                             15, 16, 17, 18, 20, 21, 24, 25, 27, 28, 30, 32, 35, 36, 40, 
                             42, 45, 48, 49, 54, 56, 63, 64, 72, 81};
 
-int Serial_Baud_Rate             = 9600;   // Serial baud rate (bps)
-long debouncing_time             = 100000; // Debouncing time (in us) for push buttons
+int Serial_Baud_Rate          = 9600;   // Serial baud rate (bps)
+long debouncing_time          = 100000; // Debouncing time (in us) for push buttons
 
 // ------------------------------------------------------------------------------------------------
 
@@ -83,6 +83,10 @@ volatile int loop_flag           = 0;   // Break out of blink loop after interru
 volatile int blocks_flag         = 0;   // Check proper connection of input blocks
                                         // 1 if all three blocks are set; 0 otherwise
 
+// ISR flags
+volatile bool InterruptOccurred       = false;
+volatile bool NextButtonISROccurred   = false;
+volatile bool SubmitButtonISROccurred = false;
 
 // ------------------------------------------------------------------------------------------------
 
@@ -99,9 +103,9 @@ void ModeFunction0();
 void ModeFunction1to3();
 void BlinkLED(int LED_pin, int On_duration, int Off_duration, int Blink_count);
 
-void DisplayTest01();
+/*void DisplayTest01();
 void DisplayTest02();
-void DisplayTest03();
+void DisplayTest03();*/
 
 // ------------------------------------------------------------------------------------------------
 
@@ -119,11 +123,6 @@ void BlinkLED(int LED_pin, int On_duration, int Off_duration, int Blink_count) {
 // ------------------------------------------------------------------------------------------------
 
 // Interrupt service routines (ISRs).
-
-// Interrupt flags
-volatile bool InterruptOccurred       = false;
-volatile bool NextButtonISROccurred   = false;
-volatile bool SubmitButtonISROccurred = false;
 
 // A wrapper function for push button debouncing 
 void Debounce(void (*)());
@@ -147,6 +146,7 @@ void Debounce(void (*function)()) {
 
 
 // ISR for Next button press
+// Sets NextButtonISROccurred
 void ISRNextButtonPress() {
     if (!InterruptOccurred)
         NextButtonISROccurred   = true;
@@ -154,6 +154,7 @@ void ISRNextButtonPress() {
 
 
 // ISR for Submit button press
+// Sets SubmitButtonISROccurred
 void ISRSubmitButtonPress() {
     if (!InterruptOccurred)
         SubmitButtonISROccurred = true;
@@ -451,7 +452,6 @@ void setup() {
     randomSeed(analogRead(Pin_Battery_Level));
     
     ReadFromBlocks();
-    //NextButtonPress();
     GenerateNumber();
 }
 
