@@ -1,0 +1,22 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: PCB1.PcbDoc   08 Feb 2023  1:21:38 PM
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : PCB1.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      0.6mm (24mil)                                             Round             161       PTH        1442.89mm (56.81inch)
+T2      0.635mm (25mil)                                           Round             136       PTH        771.70mm (30.38inch)
+T3      0.7mm (28mil)                                             Round             4         PTH        10.08mm (0.40inch)
+T4      0.8mm (31mil)                                             Round             24        PTH        408.38mm (16.08inch)
+T5      0.85mm (33mil)                                            Round             20        PTH        52.62mm (2.07inch)
+T6      0.9mm (35mil)                                             Round             124       PTH        551.53mm (21.71inch)
+T7      0.95mm (37mil)                                            Round             4         PTH        9.54mm (0.38inch)
+T8      1mm (39mil)                                               Round             3         PTH        5.08mm (0.20inch)
+T9      2.032mm (80mil)                                           Round             4         PTH        414.00mm (16.30inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              480
+
+Total Processing Time (hh:mm:ss) : 00:00:01

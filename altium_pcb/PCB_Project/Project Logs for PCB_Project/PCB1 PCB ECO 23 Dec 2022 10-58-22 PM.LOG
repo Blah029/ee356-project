@@ -1,0 +1,37 @@
+Removed Pin From Net: NetName=VCC Pin=J3-5
+Removed Pin From Net: NetName=GND Pin=J8-5
+Added Component: Designator=BLK3(Block_6x5)
+Added Pin To Net: NetName=VCC Pin=BLK3-5
+Added Pin To Net: NetName=GND Pin=BLK3-10
+Added Pin To Net: NetName=NetBLK3_1 Pin=BLK3-1
+Added Pin To Net: NetName=NetBLK3_1 Pin=R17-1
+Added Pin To Net: NetName=NetBLK3_1 Pin=U5-3
+Added Net: Name=NetBLK3_1
+Added Pin To Net: NetName=NetBLK3_2 Pin=BLK3-2
+Added Pin To Net: NetName=NetBLK3_2 Pin=R18-1
+Added Pin To Net: NetName=NetBLK3_2 Pin=U5-4
+Added Net: Name=NetBLK3_2
+Added Pin To Net: NetName=NetBLK3_3 Pin=BLK3-3
+Added Pin To Net: NetName=NetBLK3_3 Pin=R19-1
+Added Pin To Net: NetName=NetBLK3_3 Pin=U5-5
+Added Net: Name=NetBLK3_3
+Added Pin To Net: NetName=NetBLK3_4 Pin=BLK3-4
+Added Pin To Net: NetName=NetBLK3_4 Pin=R20-1
+Added Pin To Net: NetName=NetBLK3_4 Pin=U5-6
+Added Net: Name=NetBLK3_4
+Added Pin To Net: NetName=NetBLK3_6 Pin=BLK3-6
+Added Pin To Net: NetName=NetBLK3_6 Pin=R35-1
+Added Pin To Net: NetName=NetBLK3_6 Pin=U5-14
+Added Net: Name=NetBLK3_6
+Added Pin To Net: NetName=NetBLK3_7 Pin=BLK3-7
+Added Pin To Net: NetName=NetBLK3_7 Pin=R36-1
+Added Pin To Net: NetName=NetBLK3_7 Pin=U5-13
+Added Net: Name=NetBLK3_7
+Added Pin To Net: NetName=NetBLK3_8 Pin=BLK3-8
+Added Pin To Net: NetName=NetBLK3_8 Pin=R37-1
+Added Pin To Net: NetName=NetBLK3_8 Pin=U5-12
+Added Net: Name=NetBLK3_8
+Added Pin To Net: NetName=NetBLK3_9 Pin=BLK3-9
+Added Pin To Net: NetName=NetBLK3_9 Pin=R38-1
+Added Pin To Net: NetName=NetBLK3_9 Pin=U5-11
+Added Net: Name=NetBLK3_9

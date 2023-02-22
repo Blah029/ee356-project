@@ -1,0 +1,77 @@
+Added Component: Designator=BLK_OP_3(Block_6x5)
+Added Component: Designator=BLK_OP_4(Block_6x5)
+Added Component: Designator=BLK_OP_5(Block_6x5)
+Added Component: Designator=BLK_OP_6(Block_6x5)
+Added Component: Designator=BLK_OP_7(Block_6x5)
+Added Component: Designator=BLK_OP_8(Block_6x5)
+Added Component: Designator=BLK_OP_9(Block_6x5)
+Added Pin To Net: NetName=NetBLK_OP_3_1 Pin=BLK_OP_3-1
+Added Pin To Net: NetName=NetBLK_OP_3_1 Pin=BLK_OP_3-2
+Added Pin To Net: NetName=NetBLK_OP_3_1 Pin=BLK_OP_3-3
+Added Pin To Net: NetName=NetBLK_OP_3_4 Pin=BLK_OP_3-4
+Added Pin To Net: NetName=NetBLK_OP_3_4 Pin=BLK_OP_3-5
+Added Pin To Net: NetName=NetBLK_OP_3_1 Pin=BLK_OP_3-6
+Added Pin To Net: NetName=NetBLK_OP_3_1 Pin=BLK_OP_3-7
+Added Pin To Net: NetName=NetBLK_OP_3_4 Pin=BLK_OP_3-8
+Added Pin To Net: NetName=NetBLK_OP_3_4 Pin=BLK_OP_3-9
+Added Pin To Net: NetName=NetBLK_OP_3_1 Pin=BLK_OP_3-10
+Added Pin To Net: NetName=NetBLK_OP_4_1 Pin=BLK_OP_4-1
+Added Pin To Net: NetName=NetBLK_OP_4_1 Pin=BLK_OP_4-2
+Added Pin To Net: NetName=NetBLK_OP_4_1 Pin=BLK_OP_4-3
+Added Pin To Net: NetName=NetBLK_OP_4_4 Pin=BLK_OP_4-4
+Added Pin To Net: NetName=NetBLK_OP_4_4 Pin=BLK_OP_4-5
+Added Pin To Net: NetName=NetBLK_OP_4_1 Pin=BLK_OP_4-6
+Added Pin To Net: NetName=NetBLK_OP_4_4 Pin=BLK_OP_4-7
+Added Pin To Net: NetName=NetBLK_OP_4_1 Pin=BLK_OP_4-8
+Added Pin To Net: NetName=NetBLK_OP_4_1 Pin=BLK_OP_4-9
+Added Pin To Net: NetName=NetBLK_OP_4_1 Pin=BLK_OP_4-10
+Added Pin To Net: NetName=NetBLK_OP_5_1 Pin=BLK_OP_5-1
+Added Pin To Net: NetName=NetBLK_OP_5_1 Pin=BLK_OP_5-2
+Added Pin To Net: NetName=NetBLK_OP_5_1 Pin=BLK_OP_5-3
+Added Pin To Net: NetName=NetBLK_OP_5_4 Pin=BLK_OP_5-4
+Added Pin To Net: NetName=NetBLK_OP_5_4 Pin=BLK_OP_5-5
+Added Pin To Net: NetName=NetBLK_OP_5_1 Pin=BLK_OP_5-6
+Added Pin To Net: NetName=NetBLK_OP_5_4 Pin=BLK_OP_5-7
+Added Pin To Net: NetName=NetBLK_OP_5_1 Pin=BLK_OP_5-8
+Added Pin To Net: NetName=NetBLK_OP_5_4 Pin=BLK_OP_5-9
+Added Pin To Net: NetName=NetBLK_OP_5_1 Pin=BLK_OP_5-10
+Added Pin To Net: NetName=NetBLK_OP_6_1 Pin=BLK_OP_6-1
+Added Pin To Net: NetName=NetBLK_OP_6_1 Pin=BLK_OP_6-2
+Added Pin To Net: NetName=NetBLK_OP_6_1 Pin=BLK_OP_6-3
+Added Pin To Net: NetName=NetBLK_OP_6_4 Pin=BLK_OP_6-4
+Added Pin To Net: NetName=NetBLK_OP_6_4 Pin=BLK_OP_6-5
+Added Pin To Net: NetName=NetBLK_OP_6_1 Pin=BLK_OP_6-6
+Added Pin To Net: NetName=NetBLK_OP_6_4 Pin=BLK_OP_6-7
+Added Pin To Net: NetName=NetBLK_OP_6_4 Pin=BLK_OP_6-8
+Added Pin To Net: NetName=NetBLK_OP_6_1 Pin=BLK_OP_6-9
+Added Pin To Net: NetName=NetBLK_OP_6_1 Pin=BLK_OP_6-10
+Added Pin To Net: NetName=NetBLK_OP_7_1 Pin=BLK_OP_7-1
+Added Pin To Net: NetName=NetBLK_OP_7_1 Pin=BLK_OP_7-2
+Added Pin To Net: NetName=NetBLK_OP_7_1 Pin=BLK_OP_7-3
+Added Pin To Net: NetName=NetBLK_OP_7_4 Pin=BLK_OP_7-4
+Added Pin To Net: NetName=NetBLK_OP_7_4 Pin=BLK_OP_7-5
+Added Pin To Net: NetName=NetBLK_OP_7_1 Pin=BLK_OP_7-6
+Added Pin To Net: NetName=NetBLK_OP_7_4 Pin=BLK_OP_7-7
+Added Pin To Net: NetName=NetBLK_OP_7_4 Pin=BLK_OP_7-8
+Added Pin To Net: NetName=NetBLK_OP_7_4 Pin=BLK_OP_7-9
+Added Pin To Net: NetName=NetBLK_OP_7_1 Pin=BLK_OP_7-10
+Added Pin To Net: NetName=NetBLK_OP_8_1 Pin=BLK_OP_8-1
+Added Pin To Net: NetName=NetBLK_OP_8_1 Pin=BLK_OP_8-2
+Added Pin To Net: NetName=NetBLK_OP_8_1 Pin=BLK_OP_8-3
+Added Pin To Net: NetName=NetBLK_OP_8_4 Pin=BLK_OP_8-4
+Added Pin To Net: NetName=NetBLK_OP_8_4 Pin=BLK_OP_8-5
+Added Pin To Net: NetName=NetBLK_OP_8_4 Pin=BLK_OP_8-6
+Added Pin To Net: NetName=NetBLK_OP_8_1 Pin=BLK_OP_8-7
+Added Pin To Net: NetName=NetBLK_OP_8_1 Pin=BLK_OP_8-8
+Added Pin To Net: NetName=NetBLK_OP_8_1 Pin=BLK_OP_8-9
+Added Pin To Net: NetName=NetBLK_OP_8_1 Pin=BLK_OP_8-10
+Added Pin To Net: NetName=NetBLK_OP_9_1 Pin=BLK_OP_9-1
+Added Pin To Net: NetName=NetBLK_OP_9_1 Pin=BLK_OP_9-2
+Added Pin To Net: NetName=NetBLK_OP_9_1 Pin=BLK_OP_9-3
+Added Pin To Net: NetName=NetBLK_OP_9_4 Pin=BLK_OP_9-4
+Added Pin To Net: NetName=NetBLK_OP_9_4 Pin=BLK_OP_9-5
+Added Pin To Net: NetName=NetBLK_OP_9_4 Pin=BLK_OP_9-6
+Added Pin To Net: NetName=NetBLK_OP_9_1 Pin=BLK_OP_9-7
+Added Pin To Net: NetName=NetBLK_OP_9_1 Pin=BLK_OP_9-8
+Added Pin To Net: NetName=NetBLK_OP_9_4 Pin=BLK_OP_9-9
+Added Pin To Net: NetName=NetBLK_OP_9_1 Pin=BLK_OP_9-10

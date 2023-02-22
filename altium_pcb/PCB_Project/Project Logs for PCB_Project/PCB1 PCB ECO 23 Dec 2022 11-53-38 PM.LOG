@@ -1,0 +1,38 @@
+Added Component: Designator=SW1(SPST KRS-1273B-R)
+Add component (AddParameter): Name = "Category"; Value = "Uncategorized"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "https://datasheet.ciiva.com/19453/155380-19453382.pdf?src-supplier=Jameco"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "https://datasheet.ciiva.com/19453/155380-19453382.pdf?src-supplier=Jameco"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "Jameco Valuepro"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "KRS-1273B-R"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of Pins"; Value = "4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Orientation"; Value = "Straight"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pricing 1"; Value = "1=0.45000, 10=0.39000, 100=0.35000, 250=0.29000 (USD)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS"; Value = "No"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Stock 1"; Value = "2143"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "Jameco"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "155380"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Termination"; Value = "PC Pins"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Throw Configuration"; Value = "SPST"; VariantName = "[No Variations]"
+Added Component: Designator=SW2(SPST KRS-1273B-R)
+Add component (AddParameter): Name = "Category"; Value = "Uncategorized"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "https://datasheet.ciiva.com/19453/155380-19453382.pdf?src-supplier=Jameco"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "https://datasheet.ciiva.com/19453/155380-19453382.pdf?src-supplier=Jameco"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "Jameco Valuepro"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "KRS-1273B-R"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of Pins"; Value = "4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Orientation"; Value = "Straight"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pricing 1"; Value = "1=0.45000, 10=0.39000, 100=0.35000, 250=0.29000 (USD)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS"; Value = "No"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Stock 1"; Value = "2143"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "Jameco"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "155380"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Termination"; Value = "PC Pins"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Throw Configuration"; Value = "SPST"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=SW1-3
+Added Pin To Net: NetName=GND Pin=SW2-3
+Added Pin To Net: NetName=NetSW1_1 Pin=SW1-1
+Added Pin To Net: NetName=NetSW1_1 Pin=U7-4
+Added Net: Name=NetSW1_1
+Added Pin To Net: NetName=NetSW2_1 Pin=SW2-1
+Added Pin To Net: NetName=NetSW2_1 Pin=U7-5
+Added Net: Name=NetSW2_1

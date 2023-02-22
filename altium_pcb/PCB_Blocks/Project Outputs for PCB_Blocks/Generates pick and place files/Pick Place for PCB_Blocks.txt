@@ -1,0 +1,36 @@
+Altium Designer Pick and Place Locations
+D:\continuum\eng\elec\y3s2\ee356\projects\ee356-project\ee356-project\altium_pcb\PCB_Blocks\Project Outputs for PCB_Blocks\Generates pick and place files\Pick Place for PCB_Blocks.txt
+
+========================================================================================================================
+File Design Information:
+
+Date:       19 02 23
+Time:       08:17
+Revision:   ec968861dfd721f751a7a03425cb7c17bf576883
+Variant:    No variations
+Units used: mil
+
+Designator Comment     Layer    Footprint Center-X(mil) Center-Y(mil) Rotation Description 
+BLK_OP_2   "6x5 Block" TopLayer Block_6x5 787.401       3149.606      0        ""          
+BLK_OP_1   "6x5 Block" TopLayer Block_6x5 1968.505      4330.708      0        ""          
+BLK_OP_0   "6x5 Block" TopLayer Block_6x5 787.401       4330.708      0        ""          
+BLK_NUM2_9 "6x5 Block" TopLayer Block_6x5 4330.709      1968.504      0        ""          
+BLK_NUM2_8 "6x5 Block" TopLayer Block_6x5 3149.607      1968.504      0        ""          
+BLK_NUM2_7 "6x5 Block" TopLayer Block_6x5 1968.505      1968.504      0        ""          
+BLK_NUM2_6 "6x5 Block" TopLayer Block_6x5 787.401       1968.504      0        ""          
+BLK_NUM2_5 "6x5 Block" TopLayer Block_6x5 7874.017      3149.606      0        ""          
+BLK_NUM2_4 "6x5 Block" TopLayer Block_6x5 6692.913      3149.606      0        ""          
+BLK_NUM2_3 "6x5 Block" TopLayer Block_6x5 5511.811      3149.606      0        ""          
+BLK_NUM2_2 "6x5 Block" TopLayer Block_6x5 4330.709      3149.606      0        ""          
+BLK_NUM2_1 "6x5 Block" TopLayer Block_6x5 3149.607      3149.606      0        ""          
+BLK_NUM2_0 "6x5 Block" TopLayer Block_6x5 1968.505      3149.606      0        ""          
+BLK_NUM1_9 "6x5 Block" TopLayer Block_6x5 7874.017      787.402       0        ""          
+BLK_NUM1_8 "6x5 Block" TopLayer Block_6x5 6692.913      787.402       0        ""          
+BLK_NUM1_7 "6x5 Block" TopLayer Block_6x5 5511.811      787.402       0        ""          
+BLK_NUM1_6 "6x5 Block" TopLayer Block_6x5 4330.709      787.402       0        ""          
+BLK_NUM1_5 "6x5 Block" TopLayer Block_6x5 3149.607      787.402       0        ""          
+BLK_NUM1_4 "6x5 Block" TopLayer Block_6x5 1968.505      787.402       0        ""          
+BLK_NUM1_3 "6x5 Block" TopLayer Block_6x5 787.401       787.402       0        ""          
+BLK_NUM1_2 "6x5 Block" TopLayer Block_6x5 7874.017      1968.504      0        ""          
+BLK_NUM1_1 "6x5 Block" TopLayer Block_6x5 6692.913      1968.504      0        ""          
+BLK_NUM1_0 "6x5 Block" TopLayer Block_6x5 5511.811      1968.504      0        ""          
