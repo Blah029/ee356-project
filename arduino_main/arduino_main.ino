@@ -99,8 +99,8 @@ void ReadFromBlocks();
 void SendDigitsToDisplay(int data_pin, int digit_10, int digit_1);
 int  ReadBatteryLevel();
 void GenerateNumber();
+void OriginalModeFunction0();
 void ModeFunction0();
-void ModeFunction1to3();
 void BlinkLED(int LED_pin, int On_duration, int Off_duration, int Blink_count);
 
 /*void DisplayTest01();
@@ -197,7 +197,7 @@ void SubmitButtonPress() {
             ModeFunction0();
         }
         else if (mode > 0 && mode <= 3) {
-            ModeFunction1to3();
+            ModeFunction0();
         }
         // TODO: update the bar graph
         if (score == 10) {
@@ -330,7 +330,7 @@ void GenerateNumber() {
 
 
 // Mode 0 - continuous problems, no score keeping. TODO: Implement bar graph
-void ModeFunction0() {
+void OriginalModeFunction0() {
     DEBUG_SERIAL.println("Mode 0");
 
     int result = 0; // Result of input operation
@@ -367,11 +367,12 @@ void ModeFunction0() {
 }
 
 
-// Modes 1,2, and 3 - keep score and penalty
-void ModeFunction1to3() {
+// Modes 1,2, and 3 - keep score and penalty (forced mode 1 by defoault)
+void ModeFunction0() {
     DEBUG_SERIAL.println("Mode 1to3");
 
-    int penalty = mode - 1; // Score reduction for incorrect answers
+    // int penalty = mode - 1; // Score reduction for incorrect answers
+    int penalty = 0;        // Forced mode 1
     int result = 0;         // Result of input operation
     // Operation based on input
     if (op == 0) {
@@ -399,6 +400,7 @@ void ModeFunction1to3() {
         BlinkLED(Pin_Red_LED, 125, 125, 3);
         digitalWrite(Pin_Red_LED, HIGH);
     }
+    analogWrite(Pin_BarGraph_PWM, map(score,0,10,0,255)); // update bar graph
     DEBUG_SERIAL.println(num1);
     DEBUG_SERIAL.println(op);
     DEBUG_SERIAL.println(num2);
@@ -458,6 +460,10 @@ void setup() {
     digitalWrite(Pin_Green_LED, LOW);
     digitalWrite(Pin_Red_LED, LOW);
 
+    // Set inital states of the analog pins
+    analogWrite(Pin_BarGraph_PWM, LOW);
+    
+    score = 0;
     ReadFromBlocks();
     GenerateNumber();
 
