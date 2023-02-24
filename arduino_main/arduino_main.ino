@@ -10,7 +10,11 @@
  * E/17/234 Pandukabhaya V. K. M.
  * E/17/371 Warnakulasuriya R.
  */
+
 // ------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
+
+#pragma region "Constants"
 
 // #defines
 #define DEBUG true                      // Set to true for debug output, false for no debug output
@@ -45,9 +49,11 @@ const int Pin_Battery_Level      = 14;  // Analog input pin for battery level   
 const int Pin_Next_Interrupt     =  2;  // Next button pin
 const int Pin_Submit_Interrupt   =  3;  // Submit button pin
 
+#pragma endregion
+
 // ------------------------------------------------------------------------------------------------
 
-// Constant data
+#pragma region "Constant data"
 
 // Possible number combinations
 int ValidNumberList[40] = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 
@@ -57,9 +63,12 @@ int ValidNumberList[40] = {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 
 int Serial_Baud_Rate          = 9600;   // Serial baud rate (bps)
 long debouncing_time          = 100000; // Debouncing time (in us) for push buttons
 
+#pragma endregion
+
 // ------------------------------------------------------------------------------------------------
 
-// Global Variables
+#pragma region "Global Variables"
+
 int ByteField[3] = {0, 0, 0};           // Bit field to store block data
                                         // i = 0: Num1 block
                                         // i = 1: Operator block
@@ -88,9 +97,13 @@ volatile bool InterruptOccurred       = false;
 volatile bool NextButtonISROccurred   = false;
 volatile bool SubmitButtonISROccurred = false;
 
+#pragma endregion
+
+// ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
 
-// Function prototypes (declarations)
+#pragma region "Function prototypes (declarations)"
+
 void NextButtonPress();
 void SubmitButtonPress();
 
@@ -107,9 +120,11 @@ void BlinkLED(int LED_pin, int On_duration, int Off_duration, int Blink_count);
 void DisplayTest02();
 void DisplayTest03();*/
 
+#pragma endregion
+
 // ------------------------------------------------------------------------------------------------
 
-// Generic functions
+#pragma region "Generic functions"
 
 void BlinkLED(int LED_pin, int On_duration, int Off_duration, int Blink_count) {
     for (int p = 1; p <= Blink_count; p++) {
@@ -120,9 +135,11 @@ void BlinkLED(int LED_pin, int On_duration, int Off_duration, int Blink_count) {
     }
 }
 
+#pragma endregion
+
 // ------------------------------------------------------------------------------------------------
 
-// Interrupt service routines (ISRs).
+#pragma region "Interrupt service routines (ISRs)"
 
 // A wrapper function for push button debouncing 
 void Debounce(void (*)());
@@ -237,10 +254,11 @@ void SubmitButtonPress() {
     */
 }
 
+#pragma endregion
+
 // ------------------------------------------------------------------------------------------------
 
-// Main functions
-
+#pragma region "Main functions"
 
 // Check if all three blocks are connected
 bool CheckBlockConectivity() {
@@ -408,6 +426,11 @@ void ModeFunction0() {
     DEBUG_SERIAL.println(number);
 }
 
+#pragma endregion
+
+// ------------------------------------------------------------------------------------------------
+
+#pragma region "Setup and main loop"
 
 // Setup
 void setup() {
@@ -479,31 +502,34 @@ void loop() {
     else if (SubmitButtonISROccurred)
         Debounce(SubmitButtonPress);
 }
-// ------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#pragma endregion
 
 // ------------------------------------------------------------------------------------------------
 
-// Test functions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------------------------------------------------------------------------------------------------
+
+#pragma region "Test functions"
 
 // Test shift registers and seven segment display
 // Example code for serial communication for the 7SSDs
@@ -557,5 +583,8 @@ void DisplayTest03() {
     SendDigitsToDisplay(Pin_Display_Data, 3,3);
 }
 */
+
+#pragma endregion
+
 // ------------------------------------------------------------------------------------------------
 
