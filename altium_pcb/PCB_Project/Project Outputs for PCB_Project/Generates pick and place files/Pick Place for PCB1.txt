@@ -1,12 +1,12 @@
 Altium Designer Pick and Place Locations
-D:\continuum\eng\elec\y3s2\ee356\projects\ee356-project\ee356-project\altium_pcb\PCB_Project\Project Outputs for PCB_Project\Generates pick and place files\Pick Place for PCB1.txt
+D:\User Files\Documents\GitHub\ee356-project\altium_pcb\PCB_Project\Project Outputs for PCB_Project\Generates pick and place files\Pick Place for PCB1.txt
 
 ========================================================================================================================
 File Design Information:
 
-Date:       19 02 23
-Time:       08:18
-Revision:   62ebfa113b13e9bd61b8da1e7443cca2f57d5cc1
+Date:       23/02/23
+Time:       10:36
+Revision:   84fce1725fa4849d75b43ace010d614fe96e4bf1
 Variant:    No variations
 Units used: mil
 
