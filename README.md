@@ -21,7 +21,7 @@
   - Arduino code for the project
 - fritzing_diagrams
   - Circuit diagrams of components done in Fritzing
--fusion_enclosure
+- fusion_enclosure
   - 3D model of the enclosure done in Fusion 360
 - proteus_simulation
   - Simulation of the project done in Proteus
