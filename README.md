@@ -15,9 +15,13 @@
   - Completion: 26th Dec 2022 - 15th Jan 2023
   - Product deployment: 16th-22nd Jan 2023
 </br></br>
+- altium_pcb
+  - Altium project for the main circuit board
 - arduino_main
   - Arduino code for the project
-- proteus_simulation
-  - Simulation of the project done in Proteus
 - fritzing_diagrams
   - Circuit diagrams of components done in Fritzing
+-fusion_enclosure
+  - 3D model of the enclosure done in Fusion 360
+- proteus_simulation
+  - Simulation of the project done in Proteus
