@@ -4,7 +4,7 @@
 - Group 10
   - E/17/146: Jayawickrama JPD
   - E/17/234: Pandukabhaya VKM
-  - E/17/371: Warnakulasuriya R
+  - E/17/371
 - Timeline
   - Inital planning: 3rd-23rd Oct 2022
   - Project proposal: 17th-23rd Oct 2022
